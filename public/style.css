@@ -54,20 +54,49 @@ h2 {
   background-color: burlywood;
   background-image: linear-gradient(black 0.1em, transparent 0),
                     linear-gradient(90deg, black 0.1em, transparent 0),
-                    radial-gradient(#000000 0.3em, rgba(0, 0, 0, 0) 0%);
+                    radial-gradient(#000000 5px, rgba(0, 0, 0, 0) 0%);
   border-color: burlywood;
   margin: 0 auto;
 
+  position: absolute;
+  margin-left: 50%;
+  left: -150px;
+
   width: 300px;
   height: 300px;
+
+  cursor: pointer;
 }
 
 .board-9 {
   width: 100%;
   height: 100%;
-  background-size: 12.5% 12.5%, 12.5% 12.5%, 50% 50%;
+  background-size: 33.33px 33.33px, 33.33px 33.33px, 133px 133px;
   border-style: solid;
-  border-width: 9px;
+  border-width: 17px;
+}
+
+.stone {
+  position: absolute;
+  top: 12.5%;
+  left: 12.5%;
+
+  width: 12.5%;
+  height: 12.5%;
+
+  background: #000;
+  border-radius: 50%;
+}
+
+.white {
+  background: #FFF;
+  box-shadow: 1px 1px 1px #404040, inset -3px -3px 5px gray;
+}
+
+.black  {
+  box-shadow: 1px 1px 1px #404040;
+  background-image: -webkit-radial-gradient( 40% 40%, circle closest-corner, #404040 0%, rgba(0, 0, 0, 0) 90%);
+  background-image: -moz-radial-gradient( 40% 40%, circle closest-side, #404040 0%, rgba(0, 0, 0, 0) 90%);
 }
 
 /* messages */
@@ -119,7 +148,7 @@ form input:focus {
 
 form button {
   width: 20%;
-  background: #FF6600;
+  background: burlywood;
   color: #FFF;
   border: none;
   padding: 10px;
