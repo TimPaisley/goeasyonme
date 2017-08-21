@@ -1,9 +1,5 @@
 $(function () {
 
-  createStone(3, 4, "white");
-  createStone(5, 7, "black");
-  createStone(1, 1, "black");
-
   function createStone(x, y, colour) {
     var table = $("#board-table");
     var stone = $("<div>").addClass("stone").addClass(colour);
@@ -13,6 +9,20 @@ $(function () {
 
     table.append(stone);
   }
+
+  $("#board-table").click(function(e) {
+    var parentOffset = $(this).offset();
+    var relX = e.pageX - parentOffset.left;
+    var relY = e.pageY - parentOffset.top;
+
+    var col = Math.round((relX - 17)/280 * 8 + 1);
+    var row = Math.round((relY - 17)/280 * 8 + 1);
+
+    var colour = "black";
+
+    createStone(col, row, colour);
+    socket.emit('place stone', col, row, colour);
+  });
 
   // messages
 
@@ -25,6 +35,13 @@ $(function () {
 
   socket.on('chat message', function(msg){
     addMessage(msg);
+  });
+
+  socket.on('place stone', function(col, row, colour) {
+    rowLetter = String.fromCharCode(64 + row);
+    player = colour.charAt(0).toUpperCase() + colour.slice(1);
+
+    addMessage(player + " has placed a stone at " + rowLetter + col);
   });
 
   socket.on('user connected', function(msg) {
