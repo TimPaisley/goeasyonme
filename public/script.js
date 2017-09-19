@@ -1,13 +1,54 @@
 $(function () {
 
-  function createStone(x, y, colour) {
-    var table = $("#board-table");
-    var stone = $("<div>").addClass("stone").addClass(colour);
+  var Board = {
+    var PLAYERS = {
+      WHITE : { name: "white", code: "W" },
+      BLACK : { name: "black", code: "B" }
+    }
 
-    stone.css('top', 6.25 + ((y-2) * 12.5) + "%");
-    stone.css('left', 6.25 + ((x-2) * 12.5) + "%");
+    init: function (size) {
+      this.size = size;
+      this.moves = [];
+      this.activePlayer = PLAYERS.WHITE;
+    }
 
-    table.append(stone);
+    attemptMove: function (x, y) {
+      if (validateMove(x, y)) {
+        placeStone(x, y, this.activePlayer);
+        switchPlayers();
+      }
+    }
+
+    switchPlayers: function () {
+      if (activePlayer == PLAYERS.WHITE) { this.activePlayer = PLAYERS.BLACK }
+      else { this.activePlayer = PLAYERS.WHITE }
+    }
+
+    validateMove: function (x, y) {
+      for (var i = 0; i < this.moves.length; i++) {
+        if (moves[i].row == y && moves[i].col == x) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    placeStone: function (x, y, player) {
+      var table = $("#board-table");
+      var stone = $("<div>").addClass("stone").addClass(colour);
+
+      stone.css('top', 6.25 + ((y-2) * 12.5) + "%");
+      stone.css('left', 6.25 + ((x-2) * 12.5) + "%");
+
+      table.append(stone);
+
+      this.move.push({
+        row: y,
+        col: x,
+        player: player
+      })
+    }
   }
 
   $("#board-table").click(function(e) {
