@@ -1,0 +1,8 @@
+var _elm_lang$elm_architecture_tutorial$Model$Model = F4(
+	function (a, b, c, d) {
+		return {state: a, word: b, guesses: c, chances: d};
+	});
+var _elm_lang$elm_architecture_tutorial$Model$Lost = {ctor: 'Lost'};
+var _elm_lang$elm_architecture_tutorial$Model$Won = {ctor: 'Won'};
+var _elm_lang$elm_architecture_tutorial$Model$Playing = {ctor: 'Playing'};
+var _elm_lang$elm_architecture_tutorial$Model$initial = {state: _elm_lang$elm_architecture_tutorial$Model$Playing, word: '', guesses: _elm_lang$core$Set$empty, chances: 10};

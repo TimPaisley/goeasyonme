@@ -1,0 +1,49 @@
+var _sc_nz$elm_hangman$Update$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		if (_p0.ctor === 'NewWord') {
+			if (_p0._0.ctor === 'Ok') {
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							word: _elm_lang$core$String$toLower(_p0._0._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			} else {
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			}
+		} else {
+			var newModel = _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					guesses: A2(_sc_nz$elm_hangman$Model$addKeyCodeToGuesses, model.guesses, _p0._0)
+				});
+			var _p1 = model.state;
+			switch (_p1.ctor) {
+				case 'Playing':
+					return _sc_nz$elm_hangman$Model$gameWon(newModel) ? {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							newModel,
+							{state: _sc_nz$elm_hangman$Model$Won}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					} : (_sc_nz$elm_hangman$Model$gameLost(newModel) ? {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							newModel,
+							{state: _sc_nz$elm_hangman$Model$Lost}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					} : {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none});
+				case 'Won':
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				default:
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			}
+		}
+	});
+var _sc_nz$elm_hangman$Update$subscriptions = function (model) {
+	return _elm_lang$keyboard$Keyboard$downs(_sc_nz$elm_hangman$Messages$Guess);
+};

@@ -1,0 +1,168 @@
+var _sc_nz$elm_hangman$ModelTests$gameLost = A2(
+	_elm_community$elm_test$Test$describe,
+	'Model.gameLost',
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_community$elm_test$Test$test,
+			'returns true when the number of incorrect guesses equals or exceeds the chances',
+			function (_p0) {
+				var model = {
+					state: _sc_nz$elm_hangman$Model$Playing,
+					word: 'xyz',
+					guesses: _elm_lang$core$Set$fromList(
+						{
+							ctor: '::',
+							_0: _elm_lang$core$Native_Utils.chr('a'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Native_Utils.chr('b'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$core$Native_Utils.chr('c'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$core$Native_Utils.chr('d'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$core$Native_Utils.chr('e'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$core$Native_Utils.chr('f'),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}),
+					chances: 5
+				};
+				return A2(
+					_elm_community$elm_test$Expect$true,
+					'expected game to be lost',
+					_sc_nz$elm_hangman$Model$gameLost(model));
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_community$elm_test$Test$test,
+				'returns false when the amount of incorrect guesses is fewer than the chances',
+				function (_p1) {
+					var model = {
+						state: _sc_nz$elm_hangman$Model$Playing,
+						word: 'abcdef',
+						guesses: _elm_lang$core$Set$fromList(
+							{
+								ctor: '::',
+								_0: _elm_lang$core$Native_Utils.chr('a'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$core$Native_Utils.chr('b'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$core$Native_Utils.chr('c'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$core$Native_Utils.chr('x'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$core$Native_Utils.chr('y'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$core$Native_Utils.chr('z'),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}),
+						chances: 5
+					};
+					return A2(
+						_elm_community$elm_test$Expect$false,
+						'expected game not to be lost',
+						_sc_nz$elm_hangman$Model$gameLost(model));
+				}),
+			_1: {ctor: '[]'}
+		}
+	});
+var _sc_nz$elm_hangman$ModelTests$gameWon = A2(
+	_elm_community$elm_test$Test$describe,
+	'Model.gameWon',
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_community$elm_test$Test$test,
+			'returns true when all letters in the target word have been guessed',
+			function (_p2) {
+				var model = {
+					state: _sc_nz$elm_hangman$Model$Playing,
+					word: 'hangman',
+					guesses: _elm_lang$core$Set$fromList(
+						{
+							ctor: '::',
+							_0: _elm_lang$core$Native_Utils.chr('h'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Native_Utils.chr('a'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$core$Native_Utils.chr('n'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$core$Native_Utils.chr('g'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$core$Native_Utils.chr('m'),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}),
+					chances: 10
+				};
+				return A2(
+					_elm_community$elm_test$Expect$true,
+					'expected game to be won',
+					_sc_nz$elm_hangman$Model$gameWon(model));
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_community$elm_test$Test$test,
+				'returns false when all letters in the target word have not been guessed',
+				function (_p3) {
+					var model = {
+						state: _sc_nz$elm_hangman$Model$Playing,
+						word: 'hangman',
+						guesses: _elm_lang$core$Set$fromList(
+							{
+								ctor: '::',
+								_0: _elm_lang$core$Native_Utils.chr('h'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$core$Native_Utils.chr('a'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$core$Native_Utils.chr('g'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$core$Native_Utils.chr('m'),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}),
+						chances: 10
+					};
+					return A2(
+						_elm_community$elm_test$Expect$false,
+						'expected game not to be won',
+						_sc_nz$elm_hangman$Model$gameWon(model));
+				}),
+			_1: {ctor: '[]'}
+		}
+	});

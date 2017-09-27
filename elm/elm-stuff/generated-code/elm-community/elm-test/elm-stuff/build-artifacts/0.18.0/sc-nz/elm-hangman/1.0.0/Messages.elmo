@@ -1,0 +1,6 @@
+var _sc_nz$elm_hangman$Messages$Guess = function (a) {
+	return {ctor: 'Guess', _0: a};
+};
+var _sc_nz$elm_hangman$Messages$NewWord = function (a) {
+	return {ctor: 'NewWord', _0: a};
+};

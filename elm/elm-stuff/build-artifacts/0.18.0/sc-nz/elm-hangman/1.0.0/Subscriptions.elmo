@@ -1,0 +1,3 @@
+var _sc_nz$elm_hangman$Subscriptions$subscriptions = function (model) {
+	return _elm_lang$keyboard$Keyboard$downs(_sc_nz$elm_hangman$Messages$Guess);
+};

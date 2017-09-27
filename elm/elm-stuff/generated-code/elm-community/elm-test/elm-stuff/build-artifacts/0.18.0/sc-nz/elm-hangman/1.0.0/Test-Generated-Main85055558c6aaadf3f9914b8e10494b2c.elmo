@@ -1,0 +1,27 @@
+var _sc_nz$elm_hangman$Test_Generated_Main85055558c6aaadf3f9914b8e10494b2c$emit = _elm_lang$core$Native_Platform.outgoingPort(
+	'emit',
+	function (v) {
+		return [v._0, v._1];
+	});
+var _sc_nz$elm_hangman$Test_Generated_Main85055558c6aaadf3f9914b8e10494b2c$main = A3(
+	_sc_nz$elm_hangman$Test_Runner_Node$runWithOptions,
+	{
+		runs: _elm_lang$core$Maybe$Nothing,
+		reporter: _elm_lang$core$Maybe$Nothing,
+		seed: _elm_lang$core$Maybe$Nothing,
+		paths: {ctor: '[]'}
+	},
+	_sc_nz$elm_hangman$Test_Generated_Main85055558c6aaadf3f9914b8e10494b2c$emit,
+	_elm_community$elm_test$Test$concat(
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_community$elm_test$Test$describe,
+				'ModelTests',
+				{
+					ctor: '::',
+					_0: _sc_nz$elm_hangman$ModelTests$gameWon,
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}))(_elm_lang$core$Json_Decode$value);

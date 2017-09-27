@@ -1,0 +1,226 @@
+var _elm_lang$elm_architecture_tutorial$Update$stringToSet = function (string) {
+	return _elm_lang$core$Set$fromList(
+		_elm_lang$core$String$toList(string));
+};
+var _elm_lang$elm_architecture_tutorial$Update$gameWon = function (model) {
+	var wordLetters = _elm_lang$elm_architecture_tutorial$Update$stringToSet(model.word);
+	return _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Set$size(
+			A2(_elm_lang$core$Set$diff, wordLetters, model.guesses)),
+		0);
+};
+var _elm_lang$elm_architecture_tutorial$Update$formatLetter = F2(
+	function (guesses, letter) {
+		return A2(_elm_lang$core$Set$member, letter, guesses) ? letter : _elm_lang$core$Native_Utils.chr('_');
+	});
+var _elm_lang$elm_architecture_tutorial$Update$incorrectGuesses = function (model) {
+	return A2(
+		_elm_lang$core$Set$diff,
+		model.guesses,
+		_elm_lang$elm_architecture_tutorial$Update$stringToSet(model.word));
+};
+var _elm_lang$elm_architecture_tutorial$Update$gameLost = function (model) {
+	return _elm_lang$core$Native_Utils.cmp(
+		model.chances - _elm_lang$core$Set$size(
+			_elm_lang$elm_architecture_tutorial$Update$incorrectGuesses(model)),
+		0) < 1;
+};
+var _elm_lang$elm_architecture_tutorial$Update$hangmanPictureFilename = function (chancesRemaining) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'../img/hangman_',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(chancesRemaining),
+			'.png'));
+};
+var _elm_lang$elm_architecture_tutorial$Update$decodeRandomWordUrl = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: '0',
+		_1: {ctor: '[]'}
+	},
+	A2(_elm_lang$core$Json_Decode$field, 'word', _elm_lang$core$Json_Decode$string));
+var _elm_lang$elm_architecture_tutorial$Update$alphabet = _elm_lang$core$Set$fromList(
+	{
+		ctor: '::',
+		_0: _elm_lang$core$Native_Utils.chr('a'),
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$core$Native_Utils.chr('b'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Native_Utils.chr('c'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Native_Utils.chr('d'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Native_Utils.chr('e'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$core$Native_Utils.chr('f'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Native_Utils.chr('g'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$core$Native_Utils.chr('h'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$core$Native_Utils.chr('i'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$core$Native_Utils.chr('j'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$core$Native_Utils.chr('k'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$core$Native_Utils.chr('l'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$core$Native_Utils.chr('m'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$core$Native_Utils.chr('n'),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$core$Native_Utils.chr('o'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$core$Native_Utils.chr('p'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$core$Native_Utils.chr('q'),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$core$Native_Utils.chr('r'),
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$core$Native_Utils.chr('s'),
+																				_1: {
+																					ctor: '::',
+																					_0: _elm_lang$core$Native_Utils.chr('t'),
+																					_1: {
+																						ctor: '::',
+																						_0: _elm_lang$core$Native_Utils.chr('u'),
+																						_1: {
+																							ctor: '::',
+																							_0: _elm_lang$core$Native_Utils.chr('v'),
+																							_1: {
+																								ctor: '::',
+																								_0: _elm_lang$core$Native_Utils.chr('w'),
+																								_1: {
+																									ctor: '::',
+																									_0: _elm_lang$core$Native_Utils.chr('x'),
+																									_1: {
+																										ctor: '::',
+																										_0: _elm_lang$core$Native_Utils.chr('y'),
+																										_1: {
+																											ctor: '::',
+																											_0: _elm_lang$core$Native_Utils.chr('z'),
+																											_1: {ctor: '[]'}
+																										}
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _elm_lang$elm_architecture_tutorial$Update$keyCodeToLower = function (code) {
+	var character = _elm_lang$core$Char$toLower(
+		_elm_lang$core$Char$fromCode(code));
+	return A2(_elm_lang$core$Set$member, character, _elm_lang$elm_architecture_tutorial$Update$alphabet) ? _elm_lang$core$Maybe$Just(character) : _elm_lang$core$Maybe$Nothing;
+};
+var _elm_lang$elm_architecture_tutorial$Update$addKeyCodeToGuesses = F2(
+	function (guesses, keycode) {
+		var character = _elm_lang$elm_architecture_tutorial$Update$keyCodeToLower(keycode);
+		var _p0 = character;
+		if (_p0.ctor === 'Just') {
+			var _p1 = _p0._0;
+			return A2(_elm_lang$core$Set$member, _p1, guesses) ? guesses : A2(_elm_lang$core$Set$insert, _p1, guesses);
+		} else {
+			return guesses;
+		}
+	});
+var _elm_lang$elm_architecture_tutorial$Update$update = F2(
+	function (msg, model) {
+		var _p2 = msg;
+		if (_p2.ctor === 'NewWord') {
+			if (_p2._0.ctor === 'Ok') {
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							word: _elm_lang$core$String$toLower(_p2._0._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			} else {
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			}
+		} else {
+			var newModel = _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					guesses: A2(_elm_lang$elm_architecture_tutorial$Update$addKeyCodeToGuesses, model.guesses, _p2._0)
+				});
+			var _p3 = model.state;
+			switch (_p3.ctor) {
+				case 'Playing':
+					return _elm_lang$elm_architecture_tutorial$Update$gameWon(newModel) ? {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							newModel,
+							{state: _elm_lang$elm_architecture_tutorial$Model$Won}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					} : (_elm_lang$elm_architecture_tutorial$Update$gameLost(newModel) ? {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							newModel,
+							{state: _elm_lang$elm_architecture_tutorial$Model$Lost}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					} : {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none});
+				case 'Won':
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				default:
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			}
+		}
+	});
+var _elm_lang$elm_architecture_tutorial$Update$Guess = function (a) {
+	return {ctor: 'Guess', _0: a};
+};
+var _elm_lang$elm_architecture_tutorial$Update$subscriptions = function (model) {
+	return _elm_lang$keyboard$Keyboard$downs(_elm_lang$elm_architecture_tutorial$Update$Guess);
+};
+var _elm_lang$elm_architecture_tutorial$Update$NewWord = function (a) {
+	return {ctor: 'NewWord', _0: a};
+};
+var _elm_lang$elm_architecture_tutorial$Update$getRandomWord = function () {
+	var url = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=true&excludePartOfSpeech=proper-noun&minCorpusCount=100000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=3&maxLength=-1&limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5';
+	var request = A2(_elm_lang$http$Http$get, url, _elm_lang$elm_architecture_tutorial$Update$decodeRandomWordUrl);
+	return A2(_elm_lang$http$Http$send, _elm_lang$elm_architecture_tutorial$Update$NewWord, request);
+}();

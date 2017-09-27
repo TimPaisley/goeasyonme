@@ -1,0 +1,3 @@
+var _elm_lang$elm_architecture_tutorial$Subscriptions$subscriptions = function (model) {
+	return _elm_lang$keyboard$Keyboard$downs(_elm_lang$elm_architecture_tutorial$Update$Guess);
+};

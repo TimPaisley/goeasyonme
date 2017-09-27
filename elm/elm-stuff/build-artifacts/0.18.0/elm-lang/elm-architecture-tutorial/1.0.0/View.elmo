@@ -1,0 +1,126 @@
+var _elm_lang$elm_architecture_tutorial$View$gameStateView = function (model) {
+	var message = function () {
+		var _p0 = model.state;
+		switch (_p0.ctor) {
+			case 'Playing':
+				return 'Press any key to make a guess.';
+			case 'Won':
+				return 'Congratulations, you won!';
+			default:
+				return 'You lose!';
+		}
+	}();
+	return _elm_lang$html$Html$text(message);
+};
+var _elm_lang$elm_architecture_tutorial$View$incorrectGuessesView = function (model) {
+	var incorrectGuessesList = _elm_lang$core$Set$toList(
+		_elm_lang$elm_architecture_tutorial$Update$incorrectGuesses(model));
+	return _elm_lang$html$Html$text(
+		_elm_lang$core$String$fromList(incorrectGuessesList));
+};
+var _elm_lang$elm_architecture_tutorial$View$correctGuessesView = function (model) {
+	var formattedWord = A2(
+		_elm_lang$core$List$map,
+		_elm_lang$elm_architecture_tutorial$Update$formatLetter(model.guesses),
+		_elm_lang$core$String$toList(model.word));
+	return _elm_lang$core$Native_Utils.eq(model.state, _elm_lang$elm_architecture_tutorial$Model$Playing) ? _elm_lang$html$Html$text(
+		_elm_lang$core$String$fromList(formattedWord)) : _elm_lang$html$Html$text(model.word);
+};
+var _elm_lang$elm_architecture_tutorial$View$chancesView = function (model) {
+	var chancesRemaining = model.chances - _elm_lang$core$Set$size(
+		_elm_lang$elm_architecture_tutorial$Update$incorrectGuesses(model));
+	return A2(
+		_elm_lang$html$Html$img,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$src(
+				_elm_lang$elm_architecture_tutorial$Update$hangmanPictureFilename(chancesRemaining)),
+			_1: {ctor: '[]'}
+		},
+		{ctor: '[]'});
+};
+var _elm_lang$elm_architecture_tutorial$View$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('container'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('chances'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$elm_architecture_tutorial$View$chancesView(model),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('correctGuesses'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$elm_architecture_tutorial$View$correctGuessesView(model),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('stateMessage'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$elm_architecture_tutorial$View$gameStateView(model),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('incorrectGuesses'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$elm_architecture_tutorial$View$incorrectGuessesView(model),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('footer'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Drawings by Henrik Hedlund'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		});
+};

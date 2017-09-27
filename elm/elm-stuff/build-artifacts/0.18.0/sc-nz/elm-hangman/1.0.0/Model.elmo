@@ -1,0 +1,170 @@
+var _sc_nz$elm_hangman$Model$stringToSet = function (string) {
+	return _elm_lang$core$Set$fromList(
+		_elm_lang$core$String$toList(string));
+};
+var _sc_nz$elm_hangman$Model$incorrectGuesses = function (model) {
+	return A2(
+		_elm_lang$core$Set$diff,
+		model.guesses,
+		_sc_nz$elm_hangman$Model$stringToSet(model.word));
+};
+var _sc_nz$elm_hangman$Model$chancesRemaining = function (model) {
+	return model.chances - _elm_lang$core$Set$size(
+		_sc_nz$elm_hangman$Model$incorrectGuesses(model));
+};
+var _sc_nz$elm_hangman$Model$decodeRandomWordUrl = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: '0',
+		_1: {ctor: '[]'}
+	},
+	A2(_elm_lang$core$Json_Decode$field, 'word', _elm_lang$core$Json_Decode$string));
+var _sc_nz$elm_hangman$Model$getRandomWord = function () {
+	var url = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=true&excludePartOfSpeech=proper-noun&minCorpusCount=100000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=3&maxLength=-1&limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5';
+	var request = A2(_elm_lang$http$Http$get, url, _sc_nz$elm_hangman$Model$decodeRandomWordUrl);
+	return A2(_elm_lang$http$Http$send, _sc_nz$elm_hangman$Messages$NewWord, request);
+}();
+var _sc_nz$elm_hangman$Model$gameLost = function (model) {
+	return _elm_lang$core$Native_Utils.cmp(
+		model.chances - _elm_lang$core$Set$size(
+			_sc_nz$elm_hangman$Model$incorrectGuesses(model)),
+		0) < 1;
+};
+var _sc_nz$elm_hangman$Model$gameWon = function (model) {
+	var wordLetters = _sc_nz$elm_hangman$Model$stringToSet(model.word);
+	return _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Set$size(
+			A2(_elm_lang$core$Set$diff, wordLetters, model.guesses)),
+		0);
+};
+var _sc_nz$elm_hangman$Model$alphabet = _elm_lang$core$Set$fromList(
+	{
+		ctor: '::',
+		_0: _elm_lang$core$Native_Utils.chr('a'),
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$core$Native_Utils.chr('b'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Native_Utils.chr('c'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Native_Utils.chr('d'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Native_Utils.chr('e'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$core$Native_Utils.chr('f'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Native_Utils.chr('g'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$core$Native_Utils.chr('h'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$core$Native_Utils.chr('i'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$core$Native_Utils.chr('j'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$core$Native_Utils.chr('k'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$core$Native_Utils.chr('l'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$core$Native_Utils.chr('m'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$core$Native_Utils.chr('n'),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$core$Native_Utils.chr('o'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$core$Native_Utils.chr('p'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$core$Native_Utils.chr('q'),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$core$Native_Utils.chr('r'),
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$core$Native_Utils.chr('s'),
+																				_1: {
+																					ctor: '::',
+																					_0: _elm_lang$core$Native_Utils.chr('t'),
+																					_1: {
+																						ctor: '::',
+																						_0: _elm_lang$core$Native_Utils.chr('u'),
+																						_1: {
+																							ctor: '::',
+																							_0: _elm_lang$core$Native_Utils.chr('v'),
+																							_1: {
+																								ctor: '::',
+																								_0: _elm_lang$core$Native_Utils.chr('w'),
+																								_1: {
+																									ctor: '::',
+																									_0: _elm_lang$core$Native_Utils.chr('x'),
+																									_1: {
+																										ctor: '::',
+																										_0: _elm_lang$core$Native_Utils.chr('y'),
+																										_1: {
+																											ctor: '::',
+																											_0: _elm_lang$core$Native_Utils.chr('z'),
+																											_1: {ctor: '[]'}
+																										}
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _sc_nz$elm_hangman$Model$keyCodeToLower = function (code) {
+	var character = _elm_lang$core$Char$toLower(
+		_elm_lang$core$Char$fromCode(code));
+	return A2(_elm_lang$core$Set$member, character, _sc_nz$elm_hangman$Model$alphabet) ? _elm_lang$core$Maybe$Just(character) : _elm_lang$core$Maybe$Nothing;
+};
+var _sc_nz$elm_hangman$Model$addKeyCodeToGuesses = F2(
+	function (guesses, keycode) {
+		var character = _sc_nz$elm_hangman$Model$keyCodeToLower(keycode);
+		var _p0 = character;
+		if (_p0.ctor === 'Just') {
+			var _p1 = _p0._0;
+			return A2(_elm_lang$core$Set$member, _p1, guesses) ? guesses : A2(_elm_lang$core$Set$insert, _p1, guesses);
+		} else {
+			return guesses;
+		}
+	});
+var _sc_nz$elm_hangman$Model$Model = F4(
+	function (a, b, c, d) {
+		return {state: a, word: b, guesses: c, chances: d};
+	});
+var _sc_nz$elm_hangman$Model$Lost = {ctor: 'Lost'};
+var _sc_nz$elm_hangman$Model$Won = {ctor: 'Won'};
+var _sc_nz$elm_hangman$Model$Playing = {ctor: 'Playing'};
+var _sc_nz$elm_hangman$Model$initial = {state: _sc_nz$elm_hangman$Model$Playing, word: '', guesses: _elm_lang$core$Set$empty, chances: 10};
