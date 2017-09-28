@@ -1,260 +1,104 @@
-var _sc_nz$elm_hangman$Main$gameWon = function (model) {
+var _sc_nz$elm_hangman$Main$stoneRadius = 15;
+var _sc_nz$elm_hangman$Main$stone = function (_p0) {
+	var _p1 = _p0;
 	return A2(
-		_elm_lang$core$List$all,
-		function (letter) {
-			return A2(_elm_lang$core$List$member, letter, model.guesses);
-		},
-		_elm_lang$core$String$toList(model.word));
-};
-var _sc_nz$elm_hangman$Main$formatLetter = F2(
-	function (model, letter) {
-		return A2(_elm_lang$core$List$member, letter, model.guesses) ? letter : _elm_lang$core$Native_Utils.chr('_');
-	});
-var _sc_nz$elm_hangman$Main$notInWord = F2(
-	function (model, letter) {
-		var wordLetters = _elm_lang$core$String$toList(model.word);
-		return !A2(_elm_lang$core$List$member, letter, wordLetters);
-	});
-var _sc_nz$elm_hangman$Main$incorrectGuesses = function (model) {
-	return A2(
-		_elm_lang$core$List$filter,
-		_sc_nz$elm_hangman$Main$notInWord(model),
-		model.guesses);
-};
-var _sc_nz$elm_hangman$Main$hangmanPictureFilename = function (chancesRemaining) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		'./img/hangman_',
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(chancesRemaining),
-			'.png'));
-};
-var _sc_nz$elm_hangman$Main$decodeRandomWordUrl = A2(
-	_elm_lang$core$Json_Decode$at,
-	{
-		ctor: '::',
-		_0: '0',
-		_1: {ctor: '[]'}
-	},
-	A2(_elm_lang$core$Json_Decode$field, 'word', _elm_lang$core$Json_Decode$string));
-var _sc_nz$elm_hangman$Main$gameStateView = function (model) {
-	var message = function () {
-		var _p0 = model.state;
-		switch (_p0.ctor) {
-			case 'Playing':
-				return 'Press any key to make a guess.';
-			case 'Won':
-				return 'Congratulations, you won!';
-			default:
-				return 'You lose!';
-		}
-	}();
-	return _elm_lang$html$Html$text(message);
-};
-var _sc_nz$elm_hangman$Main$incorrectGuessesView = function (model) {
-	var allIncorrectGuesses = _sc_nz$elm_hangman$Main$incorrectGuesses(model);
-	return _elm_lang$html$Html$text(
-		_elm_lang$core$String$fromList(allIncorrectGuesses));
-};
-var _sc_nz$elm_hangman$Main$alphabet = {
-	ctor: '::',
-	_0: _elm_lang$core$Native_Utils.chr('a'),
-	_1: {
-		ctor: '::',
-		_0: _elm_lang$core$Native_Utils.chr('b'),
-		_1: {
+		_elm_lang$svg$Svg$circle,
+		{
 			ctor: '::',
-			_0: _elm_lang$core$Native_Utils.chr('c'),
+			_0: _elm_lang$svg$Svg_Attributes$r(
+				_elm_lang$core$Basics$toString(_sc_nz$elm_hangman$Main$stoneRadius)),
 			_1: {
 				ctor: '::',
-				_0: _elm_lang$core$Native_Utils.chr('d'),
+				_0: _elm_lang$svg$Svg_Attributes$fill('black'),
 				_1: {
 					ctor: '::',
-					_0: _elm_lang$core$Native_Utils.chr('e'),
+					_0: _elm_lang$svg$Svg_Attributes$cy(
+						_elm_lang$core$Basics$toString(_sc_nz$elm_hangman$Main$stoneRadius + ((_p1._0 * _sc_nz$elm_hangman$Main$stoneRadius) * 2))),
 					_1: {
 						ctor: '::',
-						_0: _elm_lang$core$Native_Utils.chr('f'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$core$Native_Utils.chr('g'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$core$Native_Utils.chr('h'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$core$Native_Utils.chr('i'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$core$Native_Utils.chr('j'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$core$Native_Utils.chr('k'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$core$Native_Utils.chr('l'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$core$Native_Utils.chr('m'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$core$Native_Utils.chr('n'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$core$Native_Utils.chr('o'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$core$Native_Utils.chr('p'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$core$Native_Utils.chr('q'),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$core$Native_Utils.chr('r'),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$core$Native_Utils.chr('s'),
-																			_1: {
-																				ctor: '::',
-																				_0: _elm_lang$core$Native_Utils.chr('t'),
-																				_1: {
-																					ctor: '::',
-																					_0: _elm_lang$core$Native_Utils.chr('u'),
-																					_1: {
-																						ctor: '::',
-																						_0: _elm_lang$core$Native_Utils.chr('v'),
-																						_1: {
-																							ctor: '::',
-																							_0: _elm_lang$core$Native_Utils.chr('w'),
-																							_1: {
-																								ctor: '::',
-																								_0: _elm_lang$core$Native_Utils.chr('x'),
-																								_1: {
-																									ctor: '::',
-																									_0: _elm_lang$core$Native_Utils.chr('y'),
-																									_1: {
-																										ctor: '::',
-																										_0: _elm_lang$core$Native_Utils.chr('z'),
-																										_1: {ctor: '[]'}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
+						_0: _elm_lang$svg$Svg_Attributes$cx(
+							_elm_lang$core$Basics$toString(_sc_nz$elm_hangman$Main$stoneRadius + ((_p1._1 * _sc_nz$elm_hangman$Main$stoneRadius) * 2))),
+						_1: {ctor: '[]'}
 					}
 				}
 			}
-		}
-	}
-};
-var _sc_nz$elm_hangman$Main$keyCodeToLower = function (code) {
-	var character = _elm_lang$core$Char$toLower(
-		_elm_lang$core$Char$fromCode(code));
-	return A2(_elm_lang$core$List$member, character, _sc_nz$elm_hangman$Main$alphabet) ? _elm_lang$core$Maybe$Just(character) : _elm_lang$core$Maybe$Nothing;
-};
-var _sc_nz$elm_hangman$Main$addKeyCodeToGuesses = F2(
-	function (model, keycode) {
-		var character = _sc_nz$elm_hangman$Main$keyCodeToLower(keycode);
-		var _p1 = character;
-		if (_p1.ctor === 'Just') {
-			var _p2 = _p1._0;
-			return A2(_elm_lang$core$List$member, _p2, model.guesses) ? model.guesses : A2(
-				_elm_lang$core$Basics_ops['++'],
-				model.guesses,
-				{
-					ctor: '::',
-					_0: _p2,
-					_1: {ctor: '[]'}
-				});
-		} else {
-			return model.guesses;
-		}
-	});
-var _sc_nz$elm_hangman$Main$chances = 10;
-var _sc_nz$elm_hangman$Main$chancesView = function (model) {
-	var chancesRemaining = _sc_nz$elm_hangman$Main$chances - _elm_lang$core$List$length(
-		_sc_nz$elm_hangman$Main$incorrectGuesses(model));
-	return A2(
-		_elm_lang$html$Html$img,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$src(
-				_sc_nz$elm_hangman$Main$hangmanPictureFilename(chancesRemaining)),
-			_1: {ctor: '[]'}
 		},
 		{ctor: '[]'});
 };
-var _sc_nz$elm_hangman$Main$gameLost = function (model) {
-	return _elm_lang$core$Native_Utils.cmp(
-		_sc_nz$elm_hangman$Main$chances - _elm_lang$core$List$length(
-			_sc_nz$elm_hangman$Main$incorrectGuesses(model)),
-		0) < 1;
-};
-var _sc_nz$elm_hangman$Main$Model = F3(
-	function (a, b, c) {
-		return {state: a, word: b, guesses: c};
-	});
-var _sc_nz$elm_hangman$Main$Lost = {ctor: 'Lost'};
-var _sc_nz$elm_hangman$Main$Won = {ctor: 'Won'};
-var _sc_nz$elm_hangman$Main$update = F2(
-	function (msg, model) {
-		var _p3 = msg;
-		if (_p3.ctor === 'NewWord') {
-			if (_p3._0.ctor === 'Ok') {
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{word: _p3._0._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			} else {
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			}
-		} else {
-			var newModel = _elm_lang$core$Native_Utils.update(
-				model,
+var _sc_nz$elm_hangman$Main$header = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$id('header'),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$h1,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('GO'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h2,
+				{ctor: '[]'},
 				{
-					guesses: A2(_sc_nz$elm_hangman$Main$addKeyCodeToGuesses, model, _p3._0)
-				});
-			return (_elm_lang$core$Native_Utils.eq(model.state, _sc_nz$elm_hangman$Main$Won) || _elm_lang$core$Native_Utils.eq(model.state, _sc_nz$elm_hangman$Main$Lost)) ? {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none} : (_sc_nz$elm_hangman$Main$gameWon(newModel) ? {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					newModel,
-					{state: _sc_nz$elm_hangman$Main$Won}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			} : (_sc_nz$elm_hangman$Main$gameLost(newModel) ? {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					newModel,
-					{state: _sc_nz$elm_hangman$Main$Lost}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			} : {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none}));
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('(Easy on Me)'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
 		}
 	});
-var _sc_nz$elm_hangman$Main$Playing = {ctor: 'Playing'};
-var _sc_nz$elm_hangman$Main$correctGuessesView = function (model) {
-	var formattedWord = A2(
-		_elm_lang$core$List$map,
-		_sc_nz$elm_hangman$Main$formatLetter(model),
-		_elm_lang$core$String$toList(model.word));
-	return _elm_lang$core$Native_Utils.eq(model.state, _sc_nz$elm_hangman$Main$Playing) ? _elm_lang$html$Html$text(
-		_elm_lang$core$String$fromList(formattedWord)) : _elm_lang$html$Html$text(model.word);
+var _sc_nz$elm_hangman$Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _sc_nz$elm_hangman$Main$update = F2(
+	function (msg, model) {
+		var _p2 = msg;
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _sc_nz$elm_hangman$Main$boardSize = 9;
+var _sc_nz$elm_hangman$Main$intersectionToGrid = F2(
+	function (index, _p3) {
+		var y = (index / _sc_nz$elm_hangman$Main$boardSize) | 0;
+		var x = A2(_elm_lang$core$Basics_ops['%'], index, _sc_nz$elm_hangman$Main$boardSize);
+		return {ctor: '_Tuple2', _0: x, _1: y};
+	});
+var _sc_nz$elm_hangman$Main$boardView = function (board) {
+	var svgWidth = (_sc_nz$elm_hangman$Main$stoneRadius * _sc_nz$elm_hangman$Main$boardSize) * 2;
+	var positions = A2(_elm_lang$core$List$indexedMap, _sc_nz$elm_hangman$Main$intersectionToGrid, board);
+	var stones = A2(_elm_lang$core$List$map, _sc_nz$elm_hangman$Main$stone, positions);
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$id('board'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$svg$Svg$svg,
+				{
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$width(
+						_elm_lang$core$Basics$toString(svgWidth)),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$svg$Svg_Attributes$height(
+							_elm_lang$core$Basics$toString(svgWidth)),
+						_1: {ctor: '[]'}
+					}
+				},
+				stones),
+			_1: {ctor: '[]'}
+		});
 };
 var _sc_nz$elm_hangman$Main$view = function (model) {
 	return A2(
@@ -266,103 +110,36 @@ var _sc_nz$elm_hangman$Main$view = function (model) {
 		},
 		{
 			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('chances'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: _sc_nz$elm_hangman$Main$chancesView(model),
-					_1: {ctor: '[]'}
-				}),
+			_0: _sc_nz$elm_hangman$Main$header,
 			_1: {
 				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('correctGuesses'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: _sc_nz$elm_hangman$Main$correctGuessesView(model),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('stateMessage'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _sc_nz$elm_hangman$Main$gameStateView(model),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('incorrectGuesses'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: _sc_nz$elm_hangman$Main$incorrectGuessesView(model),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('footer'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Drawings by Henrik Hedlund'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
+				_0: _sc_nz$elm_hangman$Main$boardView(model.board),
+				_1: {ctor: '[]'}
 			}
 		});
 };
-var _sc_nz$elm_hangman$Main$Guess = function (a) {
-	return {ctor: 'Guess', _0: a};
-};
-var _sc_nz$elm_hangman$Main$subscriptions = function (model) {
-	return _elm_lang$keyboard$Keyboard$downs(_sc_nz$elm_hangman$Main$Guess);
-};
-var _sc_nz$elm_hangman$Main$NewWord = function (a) {
-	return {ctor: 'NewWord', _0: a};
-};
-var _sc_nz$elm_hangman$Main$getRandomWord = function () {
-	var url = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=true&excludePartOfSpeech=proper-noun&minCorpusCount=100000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=0&maxLength=-1&limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5';
-	var request = A2(_elm_lang$http$Http$get, url, _sc_nz$elm_hangman$Main$decodeRandomWordUrl);
-	return A2(_elm_lang$http$Http$send, _sc_nz$elm_hangman$Main$NewWord, request);
-}();
+var _sc_nz$elm_hangman$Main$Model = F3(
+	function (a, b, c) {
+		return {state: a, turn: b, board: c};
+	});
+var _sc_nz$elm_hangman$Main$Lost = {ctor: 'Lost'};
+var _sc_nz$elm_hangman$Main$Won = {ctor: 'Won'};
+var _sc_nz$elm_hangman$Main$Playing = {ctor: 'Playing'};
+var _sc_nz$elm_hangman$Main$Black = {ctor: 'Black'};
+var _sc_nz$elm_hangman$Main$White = {ctor: 'White'};
+var _sc_nz$elm_hangman$Main$Nothing = {ctor: 'Nothing'};
 var _sc_nz$elm_hangman$Main$init = {
 	ctor: '_Tuple2',
 	_0: A3(
 		_sc_nz$elm_hangman$Main$Model,
 		_sc_nz$elm_hangman$Main$Playing,
-		'',
-		{ctor: '[]'}),
-	_1: _sc_nz$elm_hangman$Main$getRandomWord
+		_sc_nz$elm_hangman$Main$Black,
+		A2(_elm_lang$core$List$repeat, _sc_nz$elm_hangman$Main$boardSize * _sc_nz$elm_hangman$Main$boardSize, _sc_nz$elm_hangman$Main$Nothing)),
+	_1: _elm_lang$core$Platform_Cmd$none
 };
 var _sc_nz$elm_hangman$Main$main = _elm_lang$html$Html$program(
 	{init: _sc_nz$elm_hangman$Main$init, view: _sc_nz$elm_hangman$Main$view, update: _sc_nz$elm_hangman$Main$update, subscriptions: _sc_nz$elm_hangman$Main$subscriptions})();
+var _sc_nz$elm_hangman$Main$Just = function (a) {
+	return {ctor: 'Just', _0: a};
+};
+var _sc_nz$elm_hangman$Main$PlaceStone = {ctor: 'PlaceStone'};

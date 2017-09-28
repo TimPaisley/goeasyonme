@@ -3746,203 +3746,6 @@ var _elm_lang$core$Result$fromMaybe = F2(
 		}
 	});
 
-var _elm_lang$core$Task$onError = _elm_lang$core$Native_Scheduler.onError;
-var _elm_lang$core$Task$andThen = _elm_lang$core$Native_Scheduler.andThen;
-var _elm_lang$core$Task$spawnCmd = F2(
-	function (router, _p0) {
-		var _p1 = _p0;
-		return _elm_lang$core$Native_Scheduler.spawn(
-			A2(
-				_elm_lang$core$Task$andThen,
-				_elm_lang$core$Platform$sendToApp(router),
-				_p1._0));
-	});
-var _elm_lang$core$Task$fail = _elm_lang$core$Native_Scheduler.fail;
-var _elm_lang$core$Task$mapError = F2(
-	function (convert, task) {
-		return A2(
-			_elm_lang$core$Task$onError,
-			function (_p2) {
-				return _elm_lang$core$Task$fail(
-					convert(_p2));
-			},
-			task);
-	});
-var _elm_lang$core$Task$succeed = _elm_lang$core$Native_Scheduler.succeed;
-var _elm_lang$core$Task$map = F2(
-	function (func, taskA) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (a) {
-				return _elm_lang$core$Task$succeed(
-					func(a));
-			},
-			taskA);
-	});
-var _elm_lang$core$Task$map2 = F3(
-	function (func, taskA, taskB) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (a) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (b) {
-						return _elm_lang$core$Task$succeed(
-							A2(func, a, b));
-					},
-					taskB);
-			},
-			taskA);
-	});
-var _elm_lang$core$Task$map3 = F4(
-	function (func, taskA, taskB, taskC) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (a) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (b) {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							function (c) {
-								return _elm_lang$core$Task$succeed(
-									A3(func, a, b, c));
-							},
-							taskC);
-					},
-					taskB);
-			},
-			taskA);
-	});
-var _elm_lang$core$Task$map4 = F5(
-	function (func, taskA, taskB, taskC, taskD) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (a) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (b) {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							function (c) {
-								return A2(
-									_elm_lang$core$Task$andThen,
-									function (d) {
-										return _elm_lang$core$Task$succeed(
-											A4(func, a, b, c, d));
-									},
-									taskD);
-							},
-							taskC);
-					},
-					taskB);
-			},
-			taskA);
-	});
-var _elm_lang$core$Task$map5 = F6(
-	function (func, taskA, taskB, taskC, taskD, taskE) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (a) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (b) {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							function (c) {
-								return A2(
-									_elm_lang$core$Task$andThen,
-									function (d) {
-										return A2(
-											_elm_lang$core$Task$andThen,
-											function (e) {
-												return _elm_lang$core$Task$succeed(
-													A5(func, a, b, c, d, e));
-											},
-											taskE);
-									},
-									taskD);
-							},
-							taskC);
-					},
-					taskB);
-			},
-			taskA);
-	});
-var _elm_lang$core$Task$sequence = function (tasks) {
-	var _p3 = tasks;
-	if (_p3.ctor === '[]') {
-		return _elm_lang$core$Task$succeed(
-			{ctor: '[]'});
-	} else {
-		return A3(
-			_elm_lang$core$Task$map2,
-			F2(
-				function (x, y) {
-					return {ctor: '::', _0: x, _1: y};
-				}),
-			_p3._0,
-			_elm_lang$core$Task$sequence(_p3._1));
-	}
-};
-var _elm_lang$core$Task$onEffects = F3(
-	function (router, commands, state) {
-		return A2(
-			_elm_lang$core$Task$map,
-			function (_p4) {
-				return {ctor: '_Tuple0'};
-			},
-			_elm_lang$core$Task$sequence(
-				A2(
-					_elm_lang$core$List$map,
-					_elm_lang$core$Task$spawnCmd(router),
-					commands)));
-	});
-var _elm_lang$core$Task$init = _elm_lang$core$Task$succeed(
-	{ctor: '_Tuple0'});
-var _elm_lang$core$Task$onSelfMsg = F3(
-	function (_p7, _p6, _p5) {
-		return _elm_lang$core$Task$succeed(
-			{ctor: '_Tuple0'});
-	});
-var _elm_lang$core$Task$command = _elm_lang$core$Native_Platform.leaf('Task');
-var _elm_lang$core$Task$Perform = function (a) {
-	return {ctor: 'Perform', _0: a};
-};
-var _elm_lang$core$Task$perform = F2(
-	function (toMessage, task) {
-		return _elm_lang$core$Task$command(
-			_elm_lang$core$Task$Perform(
-				A2(_elm_lang$core$Task$map, toMessage, task)));
-	});
-var _elm_lang$core$Task$attempt = F2(
-	function (resultToMessage, task) {
-		return _elm_lang$core$Task$command(
-			_elm_lang$core$Task$Perform(
-				A2(
-					_elm_lang$core$Task$onError,
-					function (_p8) {
-						return _elm_lang$core$Task$succeed(
-							resultToMessage(
-								_elm_lang$core$Result$Err(_p8)));
-					},
-					A2(
-						_elm_lang$core$Task$andThen,
-						function (_p9) {
-							return _elm_lang$core$Task$succeed(
-								resultToMessage(
-									_elm_lang$core$Result$Ok(_p9)));
-						},
-						task))));
-	});
-var _elm_lang$core$Task$cmdMap = F2(
-	function (tagger, _p10) {
-		var _p11 = _p10;
-		return _elm_lang$core$Task$Perform(
-			A2(_elm_lang$core$Task$map, tagger, _p11._0));
-	});
-_elm_lang$core$Native_Platform.effectManagers['Task'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Task$init, onEffects: _elm_lang$core$Task$onEffects, onSelfMsg: _elm_lang$core$Task$onSelfMsg, tag: 'cmd', cmdMap: _elm_lang$core$Task$cmdMap};
-
 //import Native.Utils //
 
 var _elm_lang$core$Native_Debug = function() {
@@ -5274,221 +5077,6 @@ var _elm_lang$core$Dict$diff = F2(
 			t2);
 	});
 
-//import Native.Scheduler //
-
-var _elm_lang$core$Native_Time = function() {
-
-var now = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-{
-	callback(_elm_lang$core$Native_Scheduler.succeed(Date.now()));
-});
-
-function setInterval_(interval, task)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		var id = setInterval(function() {
-			_elm_lang$core$Native_Scheduler.rawSpawn(task);
-		}, interval);
-
-		return function() { clearInterval(id); };
-	});
-}
-
-return {
-	now: now,
-	setInterval_: F2(setInterval_)
-};
-
-}();
-var _elm_lang$core$Time$setInterval = _elm_lang$core$Native_Time.setInterval_;
-var _elm_lang$core$Time$spawnHelp = F3(
-	function (router, intervals, processes) {
-		var _p0 = intervals;
-		if (_p0.ctor === '[]') {
-			return _elm_lang$core$Task$succeed(processes);
-		} else {
-			var _p1 = _p0._0;
-			var spawnRest = function (id) {
-				return A3(
-					_elm_lang$core$Time$spawnHelp,
-					router,
-					_p0._1,
-					A3(_elm_lang$core$Dict$insert, _p1, id, processes));
-			};
-			var spawnTimer = _elm_lang$core$Native_Scheduler.spawn(
-				A2(
-					_elm_lang$core$Time$setInterval,
-					_p1,
-					A2(_elm_lang$core$Platform$sendToSelf, router, _p1)));
-			return A2(_elm_lang$core$Task$andThen, spawnRest, spawnTimer);
-		}
-	});
-var _elm_lang$core$Time$addMySub = F2(
-	function (_p2, state) {
-		var _p3 = _p2;
-		var _p6 = _p3._1;
-		var _p5 = _p3._0;
-		var _p4 = A2(_elm_lang$core$Dict$get, _p5, state);
-		if (_p4.ctor === 'Nothing') {
-			return A3(
-				_elm_lang$core$Dict$insert,
-				_p5,
-				{
-					ctor: '::',
-					_0: _p6,
-					_1: {ctor: '[]'}
-				},
-				state);
-		} else {
-			return A3(
-				_elm_lang$core$Dict$insert,
-				_p5,
-				{ctor: '::', _0: _p6, _1: _p4._0},
-				state);
-		}
-	});
-var _elm_lang$core$Time$inMilliseconds = function (t) {
-	return t;
-};
-var _elm_lang$core$Time$millisecond = 1;
-var _elm_lang$core$Time$second = 1000 * _elm_lang$core$Time$millisecond;
-var _elm_lang$core$Time$minute = 60 * _elm_lang$core$Time$second;
-var _elm_lang$core$Time$hour = 60 * _elm_lang$core$Time$minute;
-var _elm_lang$core$Time$inHours = function (t) {
-	return t / _elm_lang$core$Time$hour;
-};
-var _elm_lang$core$Time$inMinutes = function (t) {
-	return t / _elm_lang$core$Time$minute;
-};
-var _elm_lang$core$Time$inSeconds = function (t) {
-	return t / _elm_lang$core$Time$second;
-};
-var _elm_lang$core$Time$now = _elm_lang$core$Native_Time.now;
-var _elm_lang$core$Time$onSelfMsg = F3(
-	function (router, interval, state) {
-		var _p7 = A2(_elm_lang$core$Dict$get, interval, state.taggers);
-		if (_p7.ctor === 'Nothing') {
-			return _elm_lang$core$Task$succeed(state);
-		} else {
-			var tellTaggers = function (time) {
-				return _elm_lang$core$Task$sequence(
-					A2(
-						_elm_lang$core$List$map,
-						function (tagger) {
-							return A2(
-								_elm_lang$core$Platform$sendToApp,
-								router,
-								tagger(time));
-						},
-						_p7._0));
-			};
-			return A2(
-				_elm_lang$core$Task$andThen,
-				function (_p8) {
-					return _elm_lang$core$Task$succeed(state);
-				},
-				A2(_elm_lang$core$Task$andThen, tellTaggers, _elm_lang$core$Time$now));
-		}
-	});
-var _elm_lang$core$Time$subscription = _elm_lang$core$Native_Platform.leaf('Time');
-var _elm_lang$core$Time$State = F2(
-	function (a, b) {
-		return {taggers: a, processes: b};
-	});
-var _elm_lang$core$Time$init = _elm_lang$core$Task$succeed(
-	A2(_elm_lang$core$Time$State, _elm_lang$core$Dict$empty, _elm_lang$core$Dict$empty));
-var _elm_lang$core$Time$onEffects = F3(
-	function (router, subs, _p9) {
-		var _p10 = _p9;
-		var rightStep = F3(
-			function (_p12, id, _p11) {
-				var _p13 = _p11;
-				return {
-					ctor: '_Tuple3',
-					_0: _p13._0,
-					_1: _p13._1,
-					_2: A2(
-						_elm_lang$core$Task$andThen,
-						function (_p14) {
-							return _p13._2;
-						},
-						_elm_lang$core$Native_Scheduler.kill(id))
-				};
-			});
-		var bothStep = F4(
-			function (interval, taggers, id, _p15) {
-				var _p16 = _p15;
-				return {
-					ctor: '_Tuple3',
-					_0: _p16._0,
-					_1: A3(_elm_lang$core$Dict$insert, interval, id, _p16._1),
-					_2: _p16._2
-				};
-			});
-		var leftStep = F3(
-			function (interval, taggers, _p17) {
-				var _p18 = _p17;
-				return {
-					ctor: '_Tuple3',
-					_0: {ctor: '::', _0: interval, _1: _p18._0},
-					_1: _p18._1,
-					_2: _p18._2
-				};
-			});
-		var newTaggers = A3(_elm_lang$core$List$foldl, _elm_lang$core$Time$addMySub, _elm_lang$core$Dict$empty, subs);
-		var _p19 = A6(
-			_elm_lang$core$Dict$merge,
-			leftStep,
-			bothStep,
-			rightStep,
-			newTaggers,
-			_p10.processes,
-			{
-				ctor: '_Tuple3',
-				_0: {ctor: '[]'},
-				_1: _elm_lang$core$Dict$empty,
-				_2: _elm_lang$core$Task$succeed(
-					{ctor: '_Tuple0'})
-			});
-		var spawnList = _p19._0;
-		var existingDict = _p19._1;
-		var killTask = _p19._2;
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (newProcesses) {
-				return _elm_lang$core$Task$succeed(
-					A2(_elm_lang$core$Time$State, newTaggers, newProcesses));
-			},
-			A2(
-				_elm_lang$core$Task$andThen,
-				function (_p20) {
-					return A3(_elm_lang$core$Time$spawnHelp, router, spawnList, existingDict);
-				},
-				killTask));
-	});
-var _elm_lang$core$Time$Every = F2(
-	function (a, b) {
-		return {ctor: 'Every', _0: a, _1: b};
-	});
-var _elm_lang$core$Time$every = F2(
-	function (interval, tagger) {
-		return _elm_lang$core$Time$subscription(
-			A2(_elm_lang$core$Time$Every, interval, tagger));
-	});
-var _elm_lang$core$Time$subMap = F2(
-	function (f, _p21) {
-		var _p22 = _p21;
-		return A2(
-			_elm_lang$core$Time$Every,
-			_p22._0,
-			function (_p23) {
-				return f(
-					_p22._1(_p23));
-			});
-	});
-_elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
-
 var _elm_lang$core$Debug$crash = _elm_lang$core$Native_Debug.crash;
 var _elm_lang$core$Debug$log = _elm_lang$core$Native_Debug.log;
 
@@ -6142,10 +5730,6 @@ var _elm_lang$core$Json_Decode$bool = _elm_lang$core$Native_Json.decodePrimitive
 var _elm_lang$core$Json_Decode$string = _elm_lang$core$Native_Json.decodePrimitive('string');
 var _elm_lang$core$Json_Decode$Decoder = {ctor: 'Decoder'};
 
-var _elm_lang$core$Process$kill = _elm_lang$core$Native_Scheduler.kill;
-var _elm_lang$core$Process$sleep = _elm_lang$core$Native_Scheduler.sleep;
-var _elm_lang$core$Process$spawn = _elm_lang$core$Native_Scheduler.spawn;
-
 var _elm_lang$core$Tuple$mapSecond = F2(
 	function (func, _p0) {
 		var _p1 = _p0;
@@ -6172,192 +5756,6 @@ var _elm_lang$core$Tuple$first = function (_p6) {
 	var _p7 = _p6;
 	return _p7._0;
 };
-
-var _elm_lang$dom$Native_Dom = function() {
-
-var fakeNode = {
-	addEventListener: function() {},
-	removeEventListener: function() {}
-};
-
-var onDocument = on(typeof document !== 'undefined' ? document : fakeNode);
-var onWindow = on(typeof window !== 'undefined' ? window : fakeNode);
-
-function on(node)
-{
-	return function(eventName, decoder, toTask)
-	{
-		return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
-
-			function performTask(event)
-			{
-				var result = A2(_elm_lang$core$Json_Decode$decodeValue, decoder, event);
-				if (result.ctor === 'Ok')
-				{
-					_elm_lang$core$Native_Scheduler.rawSpawn(toTask(result._0));
-				}
-			}
-
-			node.addEventListener(eventName, performTask);
-
-			return function()
-			{
-				node.removeEventListener(eventName, performTask);
-			};
-		});
-	};
-}
-
-var rAF = typeof requestAnimationFrame !== 'undefined'
-	? requestAnimationFrame
-	: function(callback) { callback(); };
-
-function withNode(id, doStuff)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		rAF(function()
-		{
-			var node = document.getElementById(id);
-			if (node === null)
-			{
-				callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'NotFound', _0: id }));
-				return;
-			}
-			callback(_elm_lang$core$Native_Scheduler.succeed(doStuff(node)));
-		});
-	});
-}
-
-
-// FOCUS
-
-function focus(id)
-{
-	return withNode(id, function(node) {
-		node.focus();
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function blur(id)
-{
-	return withNode(id, function(node) {
-		node.blur();
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-
-// SCROLLING
-
-function getScrollTop(id)
-{
-	return withNode(id, function(node) {
-		return node.scrollTop;
-	});
-}
-
-function setScrollTop(id, desiredScrollTop)
-{
-	return withNode(id, function(node) {
-		node.scrollTop = desiredScrollTop;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function toBottom(id)
-{
-	return withNode(id, function(node) {
-		node.scrollTop = node.scrollHeight;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function getScrollLeft(id)
-{
-	return withNode(id, function(node) {
-		return node.scrollLeft;
-	});
-}
-
-function setScrollLeft(id, desiredScrollLeft)
-{
-	return withNode(id, function(node) {
-		node.scrollLeft = desiredScrollLeft;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function toRight(id)
-{
-	return withNode(id, function(node) {
-		node.scrollLeft = node.scrollWidth;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-
-// SIZE
-
-function width(options, id)
-{
-	return withNode(id, function(node) {
-		switch (options.ctor)
-		{
-			case 'Content':
-				return node.scrollWidth;
-			case 'VisibleContent':
-				return node.clientWidth;
-			case 'VisibleContentWithBorders':
-				return node.offsetWidth;
-			case 'VisibleContentWithBordersAndMargins':
-				var rect = node.getBoundingClientRect();
-				return rect.right - rect.left;
-		}
-	});
-}
-
-function height(options, id)
-{
-	return withNode(id, function(node) {
-		switch (options.ctor)
-		{
-			case 'Content':
-				return node.scrollHeight;
-			case 'VisibleContent':
-				return node.clientHeight;
-			case 'VisibleContentWithBorders':
-				return node.offsetHeight;
-			case 'VisibleContentWithBordersAndMargins':
-				var rect = node.getBoundingClientRect();
-				return rect.bottom - rect.top;
-		}
-	});
-}
-
-return {
-	onDocument: F3(onDocument),
-	onWindow: F3(onWindow),
-
-	focus: focus,
-	blur: blur,
-
-	getScrollTop: getScrollTop,
-	setScrollTop: F2(setScrollTop),
-	getScrollLeft: getScrollLeft,
-	setScrollLeft: F2(setScrollLeft),
-	toBottom: toBottom,
-	toRight: toRight,
-
-	height: F2(height),
-	width: F2(width)
-};
-
-}();
-
-var _elm_lang$dom$Dom_LowLevel$onWindow = _elm_lang$dom$Native_Dom.onWindow;
-var _elm_lang$dom$Dom_LowLevel$onDocument = _elm_lang$dom$Native_Dom.onDocument;
 
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrap;
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrapWithFlags;
@@ -8747,908 +8145,476 @@ var _elm_lang$html$Html_Attributes$classList = function (list) {
 };
 var _elm_lang$html$Html_Attributes$style = _elm_lang$virtual_dom$VirtualDom$style;
 
-var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
-var _elm_lang$html$Html_Events$targetChecked = A2(
-	_elm_lang$core$Json_Decode$at,
-	{
-		ctor: '::',
-		_0: 'target',
-		_1: {
-			ctor: '::',
-			_0: 'checked',
-			_1: {ctor: '[]'}
-		}
-	},
-	_elm_lang$core$Json_Decode$bool);
-var _elm_lang$html$Html_Events$targetValue = A2(
-	_elm_lang$core$Json_Decode$at,
-	{
-		ctor: '::',
-		_0: 'target',
-		_1: {
-			ctor: '::',
-			_0: 'value',
-			_1: {ctor: '[]'}
-		}
-	},
-	_elm_lang$core$Json_Decode$string);
-var _elm_lang$html$Html_Events$defaultOptions = _elm_lang$virtual_dom$VirtualDom$defaultOptions;
-var _elm_lang$html$Html_Events$onWithOptions = _elm_lang$virtual_dom$VirtualDom$onWithOptions;
-var _elm_lang$html$Html_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
-var _elm_lang$html$Html_Events$onFocus = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'focus',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onBlur = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'blur',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onSubmitOptions = _elm_lang$core$Native_Utils.update(
-	_elm_lang$html$Html_Events$defaultOptions,
-	{preventDefault: true});
-var _elm_lang$html$Html_Events$onSubmit = function (msg) {
-	return A3(
-		_elm_lang$html$Html_Events$onWithOptions,
-		'submit',
-		_elm_lang$html$Html_Events$onSubmitOptions,
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onCheck = function (tagger) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'change',
-		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetChecked));
-};
-var _elm_lang$html$Html_Events$onInput = function (tagger) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'input',
-		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetValue));
-};
-var _elm_lang$html$Html_Events$onMouseOut = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseout',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseOver = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseover',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseLeave = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseleave',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseEnter = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseenter',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseUp = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseup',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseDown = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mousedown',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onDoubleClick = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'dblclick',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onClick = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'click',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$Options = F2(
-	function (a, b) {
-		return {stopPropagation: a, preventDefault: b};
+var _elm_lang$svg$Svg$map = _elm_lang$virtual_dom$VirtualDom$map;
+var _elm_lang$svg$Svg$text = _elm_lang$virtual_dom$VirtualDom$text;
+var _elm_lang$svg$Svg$svgNamespace = A2(
+	_elm_lang$virtual_dom$VirtualDom$property,
+	'namespace',
+	_elm_lang$core$Json_Encode$string('http://www.w3.org/2000/svg'));
+var _elm_lang$svg$Svg$node = F3(
+	function (name, attributes, children) {
+		return A3(
+			_elm_lang$virtual_dom$VirtualDom$node,
+			name,
+			{ctor: '::', _0: _elm_lang$svg$Svg$svgNamespace, _1: attributes},
+			children);
 	});
+var _elm_lang$svg$Svg$svg = _elm_lang$svg$Svg$node('svg');
+var _elm_lang$svg$Svg$foreignObject = _elm_lang$svg$Svg$node('foreignObject');
+var _elm_lang$svg$Svg$animate = _elm_lang$svg$Svg$node('animate');
+var _elm_lang$svg$Svg$animateColor = _elm_lang$svg$Svg$node('animateColor');
+var _elm_lang$svg$Svg$animateMotion = _elm_lang$svg$Svg$node('animateMotion');
+var _elm_lang$svg$Svg$animateTransform = _elm_lang$svg$Svg$node('animateTransform');
+var _elm_lang$svg$Svg$mpath = _elm_lang$svg$Svg$node('mpath');
+var _elm_lang$svg$Svg$set = _elm_lang$svg$Svg$node('set');
+var _elm_lang$svg$Svg$a = _elm_lang$svg$Svg$node('a');
+var _elm_lang$svg$Svg$defs = _elm_lang$svg$Svg$node('defs');
+var _elm_lang$svg$Svg$g = _elm_lang$svg$Svg$node('g');
+var _elm_lang$svg$Svg$marker = _elm_lang$svg$Svg$node('marker');
+var _elm_lang$svg$Svg$mask = _elm_lang$svg$Svg$node('mask');
+var _elm_lang$svg$Svg$pattern = _elm_lang$svg$Svg$node('pattern');
+var _elm_lang$svg$Svg$switch = _elm_lang$svg$Svg$node('switch');
+var _elm_lang$svg$Svg$symbol = _elm_lang$svg$Svg$node('symbol');
+var _elm_lang$svg$Svg$desc = _elm_lang$svg$Svg$node('desc');
+var _elm_lang$svg$Svg$metadata = _elm_lang$svg$Svg$node('metadata');
+var _elm_lang$svg$Svg$title = _elm_lang$svg$Svg$node('title');
+var _elm_lang$svg$Svg$feBlend = _elm_lang$svg$Svg$node('feBlend');
+var _elm_lang$svg$Svg$feColorMatrix = _elm_lang$svg$Svg$node('feColorMatrix');
+var _elm_lang$svg$Svg$feComponentTransfer = _elm_lang$svg$Svg$node('feComponentTransfer');
+var _elm_lang$svg$Svg$feComposite = _elm_lang$svg$Svg$node('feComposite');
+var _elm_lang$svg$Svg$feConvolveMatrix = _elm_lang$svg$Svg$node('feConvolveMatrix');
+var _elm_lang$svg$Svg$feDiffuseLighting = _elm_lang$svg$Svg$node('feDiffuseLighting');
+var _elm_lang$svg$Svg$feDisplacementMap = _elm_lang$svg$Svg$node('feDisplacementMap');
+var _elm_lang$svg$Svg$feFlood = _elm_lang$svg$Svg$node('feFlood');
+var _elm_lang$svg$Svg$feFuncA = _elm_lang$svg$Svg$node('feFuncA');
+var _elm_lang$svg$Svg$feFuncB = _elm_lang$svg$Svg$node('feFuncB');
+var _elm_lang$svg$Svg$feFuncG = _elm_lang$svg$Svg$node('feFuncG');
+var _elm_lang$svg$Svg$feFuncR = _elm_lang$svg$Svg$node('feFuncR');
+var _elm_lang$svg$Svg$feGaussianBlur = _elm_lang$svg$Svg$node('feGaussianBlur');
+var _elm_lang$svg$Svg$feImage = _elm_lang$svg$Svg$node('feImage');
+var _elm_lang$svg$Svg$feMerge = _elm_lang$svg$Svg$node('feMerge');
+var _elm_lang$svg$Svg$feMergeNode = _elm_lang$svg$Svg$node('feMergeNode');
+var _elm_lang$svg$Svg$feMorphology = _elm_lang$svg$Svg$node('feMorphology');
+var _elm_lang$svg$Svg$feOffset = _elm_lang$svg$Svg$node('feOffset');
+var _elm_lang$svg$Svg$feSpecularLighting = _elm_lang$svg$Svg$node('feSpecularLighting');
+var _elm_lang$svg$Svg$feTile = _elm_lang$svg$Svg$node('feTile');
+var _elm_lang$svg$Svg$feTurbulence = _elm_lang$svg$Svg$node('feTurbulence');
+var _elm_lang$svg$Svg$font = _elm_lang$svg$Svg$node('font');
+var _elm_lang$svg$Svg$linearGradient = _elm_lang$svg$Svg$node('linearGradient');
+var _elm_lang$svg$Svg$radialGradient = _elm_lang$svg$Svg$node('radialGradient');
+var _elm_lang$svg$Svg$stop = _elm_lang$svg$Svg$node('stop');
+var _elm_lang$svg$Svg$circle = _elm_lang$svg$Svg$node('circle');
+var _elm_lang$svg$Svg$ellipse = _elm_lang$svg$Svg$node('ellipse');
+var _elm_lang$svg$Svg$image = _elm_lang$svg$Svg$node('image');
+var _elm_lang$svg$Svg$line = _elm_lang$svg$Svg$node('line');
+var _elm_lang$svg$Svg$path = _elm_lang$svg$Svg$node('path');
+var _elm_lang$svg$Svg$polygon = _elm_lang$svg$Svg$node('polygon');
+var _elm_lang$svg$Svg$polyline = _elm_lang$svg$Svg$node('polyline');
+var _elm_lang$svg$Svg$rect = _elm_lang$svg$Svg$node('rect');
+var _elm_lang$svg$Svg$use = _elm_lang$svg$Svg$node('use');
+var _elm_lang$svg$Svg$feDistantLight = _elm_lang$svg$Svg$node('feDistantLight');
+var _elm_lang$svg$Svg$fePointLight = _elm_lang$svg$Svg$node('fePointLight');
+var _elm_lang$svg$Svg$feSpotLight = _elm_lang$svg$Svg$node('feSpotLight');
+var _elm_lang$svg$Svg$altGlyph = _elm_lang$svg$Svg$node('altGlyph');
+var _elm_lang$svg$Svg$altGlyphDef = _elm_lang$svg$Svg$node('altGlyphDef');
+var _elm_lang$svg$Svg$altGlyphItem = _elm_lang$svg$Svg$node('altGlyphItem');
+var _elm_lang$svg$Svg$glyph = _elm_lang$svg$Svg$node('glyph');
+var _elm_lang$svg$Svg$glyphRef = _elm_lang$svg$Svg$node('glyphRef');
+var _elm_lang$svg$Svg$textPath = _elm_lang$svg$Svg$node('textPath');
+var _elm_lang$svg$Svg$text_ = _elm_lang$svg$Svg$node('text');
+var _elm_lang$svg$Svg$tref = _elm_lang$svg$Svg$node('tref');
+var _elm_lang$svg$Svg$tspan = _elm_lang$svg$Svg$node('tspan');
+var _elm_lang$svg$Svg$clipPath = _elm_lang$svg$Svg$node('clipPath');
+var _elm_lang$svg$Svg$colorProfile = _elm_lang$svg$Svg$node('colorProfile');
+var _elm_lang$svg$Svg$cursor = _elm_lang$svg$Svg$node('cursor');
+var _elm_lang$svg$Svg$filter = _elm_lang$svg$Svg$node('filter');
+var _elm_lang$svg$Svg$script = _elm_lang$svg$Svg$node('script');
+var _elm_lang$svg$Svg$style = _elm_lang$svg$Svg$node('style');
+var _elm_lang$svg$Svg$view = _elm_lang$svg$Svg$node('view');
 
-var _elm_lang$http$Native_Http = function() {
+var _elm_lang$svg$Svg_Attributes$writingMode = _elm_lang$virtual_dom$VirtualDom$attribute('writing-mode');
+var _elm_lang$svg$Svg_Attributes$wordSpacing = _elm_lang$virtual_dom$VirtualDom$attribute('word-spacing');
+var _elm_lang$svg$Svg_Attributes$visibility = _elm_lang$virtual_dom$VirtualDom$attribute('visibility');
+var _elm_lang$svg$Svg_Attributes$unicodeBidi = _elm_lang$virtual_dom$VirtualDom$attribute('unicode-bidi');
+var _elm_lang$svg$Svg_Attributes$textRendering = _elm_lang$virtual_dom$VirtualDom$attribute('text-rendering');
+var _elm_lang$svg$Svg_Attributes$textDecoration = _elm_lang$virtual_dom$VirtualDom$attribute('text-decoration');
+var _elm_lang$svg$Svg_Attributes$textAnchor = _elm_lang$virtual_dom$VirtualDom$attribute('text-anchor');
+var _elm_lang$svg$Svg_Attributes$stroke = _elm_lang$virtual_dom$VirtualDom$attribute('stroke');
+var _elm_lang$svg$Svg_Attributes$strokeWidth = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-width');
+var _elm_lang$svg$Svg_Attributes$strokeOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-opacity');
+var _elm_lang$svg$Svg_Attributes$strokeMiterlimit = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-miterlimit');
+var _elm_lang$svg$Svg_Attributes$strokeLinejoin = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-linejoin');
+var _elm_lang$svg$Svg_Attributes$strokeLinecap = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-linecap');
+var _elm_lang$svg$Svg_Attributes$strokeDashoffset = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-dashoffset');
+var _elm_lang$svg$Svg_Attributes$strokeDasharray = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-dasharray');
+var _elm_lang$svg$Svg_Attributes$stopOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('stop-opacity');
+var _elm_lang$svg$Svg_Attributes$stopColor = _elm_lang$virtual_dom$VirtualDom$attribute('stop-color');
+var _elm_lang$svg$Svg_Attributes$shapeRendering = _elm_lang$virtual_dom$VirtualDom$attribute('shape-rendering');
+var _elm_lang$svg$Svg_Attributes$pointerEvents = _elm_lang$virtual_dom$VirtualDom$attribute('pointer-events');
+var _elm_lang$svg$Svg_Attributes$overflow = _elm_lang$virtual_dom$VirtualDom$attribute('overflow');
+var _elm_lang$svg$Svg_Attributes$opacity = _elm_lang$virtual_dom$VirtualDom$attribute('opacity');
+var _elm_lang$svg$Svg_Attributes$mask = _elm_lang$virtual_dom$VirtualDom$attribute('mask');
+var _elm_lang$svg$Svg_Attributes$markerStart = _elm_lang$virtual_dom$VirtualDom$attribute('marker-start');
+var _elm_lang$svg$Svg_Attributes$markerMid = _elm_lang$virtual_dom$VirtualDom$attribute('marker-mid');
+var _elm_lang$svg$Svg_Attributes$markerEnd = _elm_lang$virtual_dom$VirtualDom$attribute('marker-end');
+var _elm_lang$svg$Svg_Attributes$lightingColor = _elm_lang$virtual_dom$VirtualDom$attribute('lighting-color');
+var _elm_lang$svg$Svg_Attributes$letterSpacing = _elm_lang$virtual_dom$VirtualDom$attribute('letter-spacing');
+var _elm_lang$svg$Svg_Attributes$kerning = _elm_lang$virtual_dom$VirtualDom$attribute('kerning');
+var _elm_lang$svg$Svg_Attributes$imageRendering = _elm_lang$virtual_dom$VirtualDom$attribute('image-rendering');
+var _elm_lang$svg$Svg_Attributes$glyphOrientationVertical = _elm_lang$virtual_dom$VirtualDom$attribute('glyph-orientation-vertical');
+var _elm_lang$svg$Svg_Attributes$glyphOrientationHorizontal = _elm_lang$virtual_dom$VirtualDom$attribute('glyph-orientation-horizontal');
+var _elm_lang$svg$Svg_Attributes$fontWeight = _elm_lang$virtual_dom$VirtualDom$attribute('font-weight');
+var _elm_lang$svg$Svg_Attributes$fontVariant = _elm_lang$virtual_dom$VirtualDom$attribute('font-variant');
+var _elm_lang$svg$Svg_Attributes$fontStyle = _elm_lang$virtual_dom$VirtualDom$attribute('font-style');
+var _elm_lang$svg$Svg_Attributes$fontStretch = _elm_lang$virtual_dom$VirtualDom$attribute('font-stretch');
+var _elm_lang$svg$Svg_Attributes$fontSize = _elm_lang$virtual_dom$VirtualDom$attribute('font-size');
+var _elm_lang$svg$Svg_Attributes$fontSizeAdjust = _elm_lang$virtual_dom$VirtualDom$attribute('font-size-adjust');
+var _elm_lang$svg$Svg_Attributes$fontFamily = _elm_lang$virtual_dom$VirtualDom$attribute('font-family');
+var _elm_lang$svg$Svg_Attributes$floodOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('flood-opacity');
+var _elm_lang$svg$Svg_Attributes$floodColor = _elm_lang$virtual_dom$VirtualDom$attribute('flood-color');
+var _elm_lang$svg$Svg_Attributes$filter = _elm_lang$virtual_dom$VirtualDom$attribute('filter');
+var _elm_lang$svg$Svg_Attributes$fill = _elm_lang$virtual_dom$VirtualDom$attribute('fill');
+var _elm_lang$svg$Svg_Attributes$fillRule = _elm_lang$virtual_dom$VirtualDom$attribute('fill-rule');
+var _elm_lang$svg$Svg_Attributes$fillOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('fill-opacity');
+var _elm_lang$svg$Svg_Attributes$enableBackground = _elm_lang$virtual_dom$VirtualDom$attribute('enable-background');
+var _elm_lang$svg$Svg_Attributes$dominantBaseline = _elm_lang$virtual_dom$VirtualDom$attribute('dominant-baseline');
+var _elm_lang$svg$Svg_Attributes$display = _elm_lang$virtual_dom$VirtualDom$attribute('display');
+var _elm_lang$svg$Svg_Attributes$direction = _elm_lang$virtual_dom$VirtualDom$attribute('direction');
+var _elm_lang$svg$Svg_Attributes$cursor = _elm_lang$virtual_dom$VirtualDom$attribute('cursor');
+var _elm_lang$svg$Svg_Attributes$color = _elm_lang$virtual_dom$VirtualDom$attribute('color');
+var _elm_lang$svg$Svg_Attributes$colorRendering = _elm_lang$virtual_dom$VirtualDom$attribute('color-rendering');
+var _elm_lang$svg$Svg_Attributes$colorProfile = _elm_lang$virtual_dom$VirtualDom$attribute('color-profile');
+var _elm_lang$svg$Svg_Attributes$colorInterpolation = _elm_lang$virtual_dom$VirtualDom$attribute('color-interpolation');
+var _elm_lang$svg$Svg_Attributes$colorInterpolationFilters = _elm_lang$virtual_dom$VirtualDom$attribute('color-interpolation-filters');
+var _elm_lang$svg$Svg_Attributes$clip = _elm_lang$virtual_dom$VirtualDom$attribute('clip');
+var _elm_lang$svg$Svg_Attributes$clipRule = _elm_lang$virtual_dom$VirtualDom$attribute('clip-rule');
+var _elm_lang$svg$Svg_Attributes$clipPath = _elm_lang$virtual_dom$VirtualDom$attribute('clip-path');
+var _elm_lang$svg$Svg_Attributes$baselineShift = _elm_lang$virtual_dom$VirtualDom$attribute('baseline-shift');
+var _elm_lang$svg$Svg_Attributes$alignmentBaseline = _elm_lang$virtual_dom$VirtualDom$attribute('alignment-baseline');
+var _elm_lang$svg$Svg_Attributes$zoomAndPan = _elm_lang$virtual_dom$VirtualDom$attribute('zoomAndPan');
+var _elm_lang$svg$Svg_Attributes$z = _elm_lang$virtual_dom$VirtualDom$attribute('z');
+var _elm_lang$svg$Svg_Attributes$yChannelSelector = _elm_lang$virtual_dom$VirtualDom$attribute('yChannelSelector');
+var _elm_lang$svg$Svg_Attributes$y2 = _elm_lang$virtual_dom$VirtualDom$attribute('y2');
+var _elm_lang$svg$Svg_Attributes$y1 = _elm_lang$virtual_dom$VirtualDom$attribute('y1');
+var _elm_lang$svg$Svg_Attributes$y = _elm_lang$virtual_dom$VirtualDom$attribute('y');
+var _elm_lang$svg$Svg_Attributes$xmlSpace = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/XML/1998/namespace', 'xml:space');
+var _elm_lang$svg$Svg_Attributes$xmlLang = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/XML/1998/namespace', 'xml:lang');
+var _elm_lang$svg$Svg_Attributes$xmlBase = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/XML/1998/namespace', 'xml:base');
+var _elm_lang$svg$Svg_Attributes$xlinkType = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:type');
+var _elm_lang$svg$Svg_Attributes$xlinkTitle = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:title');
+var _elm_lang$svg$Svg_Attributes$xlinkShow = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:show');
+var _elm_lang$svg$Svg_Attributes$xlinkRole = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:role');
+var _elm_lang$svg$Svg_Attributes$xlinkHref = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:href');
+var _elm_lang$svg$Svg_Attributes$xlinkArcrole = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:arcrole');
+var _elm_lang$svg$Svg_Attributes$xlinkActuate = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:actuate');
+var _elm_lang$svg$Svg_Attributes$xChannelSelector = _elm_lang$virtual_dom$VirtualDom$attribute('xChannelSelector');
+var _elm_lang$svg$Svg_Attributes$x2 = _elm_lang$virtual_dom$VirtualDom$attribute('x2');
+var _elm_lang$svg$Svg_Attributes$x1 = _elm_lang$virtual_dom$VirtualDom$attribute('x1');
+var _elm_lang$svg$Svg_Attributes$xHeight = _elm_lang$virtual_dom$VirtualDom$attribute('x-height');
+var _elm_lang$svg$Svg_Attributes$x = _elm_lang$virtual_dom$VirtualDom$attribute('x');
+var _elm_lang$svg$Svg_Attributes$widths = _elm_lang$virtual_dom$VirtualDom$attribute('widths');
+var _elm_lang$svg$Svg_Attributes$width = _elm_lang$virtual_dom$VirtualDom$attribute('width');
+var _elm_lang$svg$Svg_Attributes$viewTarget = _elm_lang$virtual_dom$VirtualDom$attribute('viewTarget');
+var _elm_lang$svg$Svg_Attributes$viewBox = _elm_lang$virtual_dom$VirtualDom$attribute('viewBox');
+var _elm_lang$svg$Svg_Attributes$vertOriginY = _elm_lang$virtual_dom$VirtualDom$attribute('vert-origin-y');
+var _elm_lang$svg$Svg_Attributes$vertOriginX = _elm_lang$virtual_dom$VirtualDom$attribute('vert-origin-x');
+var _elm_lang$svg$Svg_Attributes$vertAdvY = _elm_lang$virtual_dom$VirtualDom$attribute('vert-adv-y');
+var _elm_lang$svg$Svg_Attributes$version = _elm_lang$virtual_dom$VirtualDom$attribute('version');
+var _elm_lang$svg$Svg_Attributes$values = _elm_lang$virtual_dom$VirtualDom$attribute('values');
+var _elm_lang$svg$Svg_Attributes$vMathematical = _elm_lang$virtual_dom$VirtualDom$attribute('v-mathematical');
+var _elm_lang$svg$Svg_Attributes$vIdeographic = _elm_lang$virtual_dom$VirtualDom$attribute('v-ideographic');
+var _elm_lang$svg$Svg_Attributes$vHanging = _elm_lang$virtual_dom$VirtualDom$attribute('v-hanging');
+var _elm_lang$svg$Svg_Attributes$vAlphabetic = _elm_lang$virtual_dom$VirtualDom$attribute('v-alphabetic');
+var _elm_lang$svg$Svg_Attributes$unitsPerEm = _elm_lang$virtual_dom$VirtualDom$attribute('units-per-em');
+var _elm_lang$svg$Svg_Attributes$unicodeRange = _elm_lang$virtual_dom$VirtualDom$attribute('unicode-range');
+var _elm_lang$svg$Svg_Attributes$unicode = _elm_lang$virtual_dom$VirtualDom$attribute('unicode');
+var _elm_lang$svg$Svg_Attributes$underlineThickness = _elm_lang$virtual_dom$VirtualDom$attribute('underline-thickness');
+var _elm_lang$svg$Svg_Attributes$underlinePosition = _elm_lang$virtual_dom$VirtualDom$attribute('underline-position');
+var _elm_lang$svg$Svg_Attributes$u2 = _elm_lang$virtual_dom$VirtualDom$attribute('u2');
+var _elm_lang$svg$Svg_Attributes$u1 = _elm_lang$virtual_dom$VirtualDom$attribute('u1');
+var _elm_lang$svg$Svg_Attributes$type_ = _elm_lang$virtual_dom$VirtualDom$attribute('type');
+var _elm_lang$svg$Svg_Attributes$transform = _elm_lang$virtual_dom$VirtualDom$attribute('transform');
+var _elm_lang$svg$Svg_Attributes$to = _elm_lang$virtual_dom$VirtualDom$attribute('to');
+var _elm_lang$svg$Svg_Attributes$title = _elm_lang$virtual_dom$VirtualDom$attribute('title');
+var _elm_lang$svg$Svg_Attributes$textLength = _elm_lang$virtual_dom$VirtualDom$attribute('textLength');
+var _elm_lang$svg$Svg_Attributes$targetY = _elm_lang$virtual_dom$VirtualDom$attribute('targetY');
+var _elm_lang$svg$Svg_Attributes$targetX = _elm_lang$virtual_dom$VirtualDom$attribute('targetX');
+var _elm_lang$svg$Svg_Attributes$target = _elm_lang$virtual_dom$VirtualDom$attribute('target');
+var _elm_lang$svg$Svg_Attributes$tableValues = _elm_lang$virtual_dom$VirtualDom$attribute('tableValues');
+var _elm_lang$svg$Svg_Attributes$systemLanguage = _elm_lang$virtual_dom$VirtualDom$attribute('systemLanguage');
+var _elm_lang$svg$Svg_Attributes$surfaceScale = _elm_lang$virtual_dom$VirtualDom$attribute('surfaceScale');
+var _elm_lang$svg$Svg_Attributes$style = _elm_lang$virtual_dom$VirtualDom$attribute('style');
+var _elm_lang$svg$Svg_Attributes$string = _elm_lang$virtual_dom$VirtualDom$attribute('string');
+var _elm_lang$svg$Svg_Attributes$strikethroughThickness = _elm_lang$virtual_dom$VirtualDom$attribute('strikethrough-thickness');
+var _elm_lang$svg$Svg_Attributes$strikethroughPosition = _elm_lang$virtual_dom$VirtualDom$attribute('strikethrough-position');
+var _elm_lang$svg$Svg_Attributes$stitchTiles = _elm_lang$virtual_dom$VirtualDom$attribute('stitchTiles');
+var _elm_lang$svg$Svg_Attributes$stemv = _elm_lang$virtual_dom$VirtualDom$attribute('stemv');
+var _elm_lang$svg$Svg_Attributes$stemh = _elm_lang$virtual_dom$VirtualDom$attribute('stemh');
+var _elm_lang$svg$Svg_Attributes$stdDeviation = _elm_lang$virtual_dom$VirtualDom$attribute('stdDeviation');
+var _elm_lang$svg$Svg_Attributes$startOffset = _elm_lang$virtual_dom$VirtualDom$attribute('startOffset');
+var _elm_lang$svg$Svg_Attributes$spreadMethod = _elm_lang$virtual_dom$VirtualDom$attribute('spreadMethod');
+var _elm_lang$svg$Svg_Attributes$speed = _elm_lang$virtual_dom$VirtualDom$attribute('speed');
+var _elm_lang$svg$Svg_Attributes$specularExponent = _elm_lang$virtual_dom$VirtualDom$attribute('specularExponent');
+var _elm_lang$svg$Svg_Attributes$specularConstant = _elm_lang$virtual_dom$VirtualDom$attribute('specularConstant');
+var _elm_lang$svg$Svg_Attributes$spacing = _elm_lang$virtual_dom$VirtualDom$attribute('spacing');
+var _elm_lang$svg$Svg_Attributes$slope = _elm_lang$virtual_dom$VirtualDom$attribute('slope');
+var _elm_lang$svg$Svg_Attributes$seed = _elm_lang$virtual_dom$VirtualDom$attribute('seed');
+var _elm_lang$svg$Svg_Attributes$scale = _elm_lang$virtual_dom$VirtualDom$attribute('scale');
+var _elm_lang$svg$Svg_Attributes$ry = _elm_lang$virtual_dom$VirtualDom$attribute('ry');
+var _elm_lang$svg$Svg_Attributes$rx = _elm_lang$virtual_dom$VirtualDom$attribute('rx');
+var _elm_lang$svg$Svg_Attributes$rotate = _elm_lang$virtual_dom$VirtualDom$attribute('rotate');
+var _elm_lang$svg$Svg_Attributes$result = _elm_lang$virtual_dom$VirtualDom$attribute('result');
+var _elm_lang$svg$Svg_Attributes$restart = _elm_lang$virtual_dom$VirtualDom$attribute('restart');
+var _elm_lang$svg$Svg_Attributes$requiredFeatures = _elm_lang$virtual_dom$VirtualDom$attribute('requiredFeatures');
+var _elm_lang$svg$Svg_Attributes$requiredExtensions = _elm_lang$virtual_dom$VirtualDom$attribute('requiredExtensions');
+var _elm_lang$svg$Svg_Attributes$repeatDur = _elm_lang$virtual_dom$VirtualDom$attribute('repeatDur');
+var _elm_lang$svg$Svg_Attributes$repeatCount = _elm_lang$virtual_dom$VirtualDom$attribute('repeatCount');
+var _elm_lang$svg$Svg_Attributes$renderingIntent = _elm_lang$virtual_dom$VirtualDom$attribute('rendering-intent');
+var _elm_lang$svg$Svg_Attributes$refY = _elm_lang$virtual_dom$VirtualDom$attribute('refY');
+var _elm_lang$svg$Svg_Attributes$refX = _elm_lang$virtual_dom$VirtualDom$attribute('refX');
+var _elm_lang$svg$Svg_Attributes$radius = _elm_lang$virtual_dom$VirtualDom$attribute('radius');
+var _elm_lang$svg$Svg_Attributes$r = _elm_lang$virtual_dom$VirtualDom$attribute('r');
+var _elm_lang$svg$Svg_Attributes$primitiveUnits = _elm_lang$virtual_dom$VirtualDom$attribute('primitiveUnits');
+var _elm_lang$svg$Svg_Attributes$preserveAspectRatio = _elm_lang$virtual_dom$VirtualDom$attribute('preserveAspectRatio');
+var _elm_lang$svg$Svg_Attributes$preserveAlpha = _elm_lang$virtual_dom$VirtualDom$attribute('preserveAlpha');
+var _elm_lang$svg$Svg_Attributes$pointsAtZ = _elm_lang$virtual_dom$VirtualDom$attribute('pointsAtZ');
+var _elm_lang$svg$Svg_Attributes$pointsAtY = _elm_lang$virtual_dom$VirtualDom$attribute('pointsAtY');
+var _elm_lang$svg$Svg_Attributes$pointsAtX = _elm_lang$virtual_dom$VirtualDom$attribute('pointsAtX');
+var _elm_lang$svg$Svg_Attributes$points = _elm_lang$virtual_dom$VirtualDom$attribute('points');
+var _elm_lang$svg$Svg_Attributes$pointOrder = _elm_lang$virtual_dom$VirtualDom$attribute('point-order');
+var _elm_lang$svg$Svg_Attributes$patternUnits = _elm_lang$virtual_dom$VirtualDom$attribute('patternUnits');
+var _elm_lang$svg$Svg_Attributes$patternTransform = _elm_lang$virtual_dom$VirtualDom$attribute('patternTransform');
+var _elm_lang$svg$Svg_Attributes$patternContentUnits = _elm_lang$virtual_dom$VirtualDom$attribute('patternContentUnits');
+var _elm_lang$svg$Svg_Attributes$pathLength = _elm_lang$virtual_dom$VirtualDom$attribute('pathLength');
+var _elm_lang$svg$Svg_Attributes$path = _elm_lang$virtual_dom$VirtualDom$attribute('path');
+var _elm_lang$svg$Svg_Attributes$panose1 = _elm_lang$virtual_dom$VirtualDom$attribute('panose-1');
+var _elm_lang$svg$Svg_Attributes$overlineThickness = _elm_lang$virtual_dom$VirtualDom$attribute('overline-thickness');
+var _elm_lang$svg$Svg_Attributes$overlinePosition = _elm_lang$virtual_dom$VirtualDom$attribute('overline-position');
+var _elm_lang$svg$Svg_Attributes$origin = _elm_lang$virtual_dom$VirtualDom$attribute('origin');
+var _elm_lang$svg$Svg_Attributes$orientation = _elm_lang$virtual_dom$VirtualDom$attribute('orientation');
+var _elm_lang$svg$Svg_Attributes$orient = _elm_lang$virtual_dom$VirtualDom$attribute('orient');
+var _elm_lang$svg$Svg_Attributes$order = _elm_lang$virtual_dom$VirtualDom$attribute('order');
+var _elm_lang$svg$Svg_Attributes$operator = _elm_lang$virtual_dom$VirtualDom$attribute('operator');
+var _elm_lang$svg$Svg_Attributes$offset = _elm_lang$virtual_dom$VirtualDom$attribute('offset');
+var _elm_lang$svg$Svg_Attributes$numOctaves = _elm_lang$virtual_dom$VirtualDom$attribute('numOctaves');
+var _elm_lang$svg$Svg_Attributes$name = _elm_lang$virtual_dom$VirtualDom$attribute('name');
+var _elm_lang$svg$Svg_Attributes$mode = _elm_lang$virtual_dom$VirtualDom$attribute('mode');
+var _elm_lang$svg$Svg_Attributes$min = _elm_lang$virtual_dom$VirtualDom$attribute('min');
+var _elm_lang$svg$Svg_Attributes$method = _elm_lang$virtual_dom$VirtualDom$attribute('method');
+var _elm_lang$svg$Svg_Attributes$media = _elm_lang$virtual_dom$VirtualDom$attribute('media');
+var _elm_lang$svg$Svg_Attributes$max = _elm_lang$virtual_dom$VirtualDom$attribute('max');
+var _elm_lang$svg$Svg_Attributes$mathematical = _elm_lang$virtual_dom$VirtualDom$attribute('mathematical');
+var _elm_lang$svg$Svg_Attributes$maskUnits = _elm_lang$virtual_dom$VirtualDom$attribute('maskUnits');
+var _elm_lang$svg$Svg_Attributes$maskContentUnits = _elm_lang$virtual_dom$VirtualDom$attribute('maskContentUnits');
+var _elm_lang$svg$Svg_Attributes$markerWidth = _elm_lang$virtual_dom$VirtualDom$attribute('markerWidth');
+var _elm_lang$svg$Svg_Attributes$markerUnits = _elm_lang$virtual_dom$VirtualDom$attribute('markerUnits');
+var _elm_lang$svg$Svg_Attributes$markerHeight = _elm_lang$virtual_dom$VirtualDom$attribute('markerHeight');
+var _elm_lang$svg$Svg_Attributes$local = _elm_lang$virtual_dom$VirtualDom$attribute('local');
+var _elm_lang$svg$Svg_Attributes$limitingConeAngle = _elm_lang$virtual_dom$VirtualDom$attribute('limitingConeAngle');
+var _elm_lang$svg$Svg_Attributes$lengthAdjust = _elm_lang$virtual_dom$VirtualDom$attribute('lengthAdjust');
+var _elm_lang$svg$Svg_Attributes$lang = _elm_lang$virtual_dom$VirtualDom$attribute('lang');
+var _elm_lang$svg$Svg_Attributes$keyTimes = _elm_lang$virtual_dom$VirtualDom$attribute('keyTimes');
+var _elm_lang$svg$Svg_Attributes$keySplines = _elm_lang$virtual_dom$VirtualDom$attribute('keySplines');
+var _elm_lang$svg$Svg_Attributes$keyPoints = _elm_lang$virtual_dom$VirtualDom$attribute('keyPoints');
+var _elm_lang$svg$Svg_Attributes$kernelUnitLength = _elm_lang$virtual_dom$VirtualDom$attribute('kernelUnitLength');
+var _elm_lang$svg$Svg_Attributes$kernelMatrix = _elm_lang$virtual_dom$VirtualDom$attribute('kernelMatrix');
+var _elm_lang$svg$Svg_Attributes$k4 = _elm_lang$virtual_dom$VirtualDom$attribute('k4');
+var _elm_lang$svg$Svg_Attributes$k3 = _elm_lang$virtual_dom$VirtualDom$attribute('k3');
+var _elm_lang$svg$Svg_Attributes$k2 = _elm_lang$virtual_dom$VirtualDom$attribute('k2');
+var _elm_lang$svg$Svg_Attributes$k1 = _elm_lang$virtual_dom$VirtualDom$attribute('k1');
+var _elm_lang$svg$Svg_Attributes$k = _elm_lang$virtual_dom$VirtualDom$attribute('k');
+var _elm_lang$svg$Svg_Attributes$intercept = _elm_lang$virtual_dom$VirtualDom$attribute('intercept');
+var _elm_lang$svg$Svg_Attributes$in2 = _elm_lang$virtual_dom$VirtualDom$attribute('in2');
+var _elm_lang$svg$Svg_Attributes$in_ = _elm_lang$virtual_dom$VirtualDom$attribute('in');
+var _elm_lang$svg$Svg_Attributes$ideographic = _elm_lang$virtual_dom$VirtualDom$attribute('ideographic');
+var _elm_lang$svg$Svg_Attributes$id = _elm_lang$virtual_dom$VirtualDom$attribute('id');
+var _elm_lang$svg$Svg_Attributes$horizOriginY = _elm_lang$virtual_dom$VirtualDom$attribute('horiz-origin-y');
+var _elm_lang$svg$Svg_Attributes$horizOriginX = _elm_lang$virtual_dom$VirtualDom$attribute('horiz-origin-x');
+var _elm_lang$svg$Svg_Attributes$horizAdvX = _elm_lang$virtual_dom$VirtualDom$attribute('horiz-adv-x');
+var _elm_lang$svg$Svg_Attributes$height = _elm_lang$virtual_dom$VirtualDom$attribute('height');
+var _elm_lang$svg$Svg_Attributes$hanging = _elm_lang$virtual_dom$VirtualDom$attribute('hanging');
+var _elm_lang$svg$Svg_Attributes$gradientUnits = _elm_lang$virtual_dom$VirtualDom$attribute('gradientUnits');
+var _elm_lang$svg$Svg_Attributes$gradientTransform = _elm_lang$virtual_dom$VirtualDom$attribute('gradientTransform');
+var _elm_lang$svg$Svg_Attributes$glyphRef = _elm_lang$virtual_dom$VirtualDom$attribute('glyphRef');
+var _elm_lang$svg$Svg_Attributes$glyphName = _elm_lang$virtual_dom$VirtualDom$attribute('glyph-name');
+var _elm_lang$svg$Svg_Attributes$g2 = _elm_lang$virtual_dom$VirtualDom$attribute('g2');
+var _elm_lang$svg$Svg_Attributes$g1 = _elm_lang$virtual_dom$VirtualDom$attribute('g1');
+var _elm_lang$svg$Svg_Attributes$fy = _elm_lang$virtual_dom$VirtualDom$attribute('fy');
+var _elm_lang$svg$Svg_Attributes$fx = _elm_lang$virtual_dom$VirtualDom$attribute('fx');
+var _elm_lang$svg$Svg_Attributes$from = _elm_lang$virtual_dom$VirtualDom$attribute('from');
+var _elm_lang$svg$Svg_Attributes$format = _elm_lang$virtual_dom$VirtualDom$attribute('format');
+var _elm_lang$svg$Svg_Attributes$filterUnits = _elm_lang$virtual_dom$VirtualDom$attribute('filterUnits');
+var _elm_lang$svg$Svg_Attributes$filterRes = _elm_lang$virtual_dom$VirtualDom$attribute('filterRes');
+var _elm_lang$svg$Svg_Attributes$externalResourcesRequired = _elm_lang$virtual_dom$VirtualDom$attribute('externalResourcesRequired');
+var _elm_lang$svg$Svg_Attributes$exponent = _elm_lang$virtual_dom$VirtualDom$attribute('exponent');
+var _elm_lang$svg$Svg_Attributes$end = _elm_lang$virtual_dom$VirtualDom$attribute('end');
+var _elm_lang$svg$Svg_Attributes$elevation = _elm_lang$virtual_dom$VirtualDom$attribute('elevation');
+var _elm_lang$svg$Svg_Attributes$edgeMode = _elm_lang$virtual_dom$VirtualDom$attribute('edgeMode');
+var _elm_lang$svg$Svg_Attributes$dy = _elm_lang$virtual_dom$VirtualDom$attribute('dy');
+var _elm_lang$svg$Svg_Attributes$dx = _elm_lang$virtual_dom$VirtualDom$attribute('dx');
+var _elm_lang$svg$Svg_Attributes$dur = _elm_lang$virtual_dom$VirtualDom$attribute('dur');
+var _elm_lang$svg$Svg_Attributes$divisor = _elm_lang$virtual_dom$VirtualDom$attribute('divisor');
+var _elm_lang$svg$Svg_Attributes$diffuseConstant = _elm_lang$virtual_dom$VirtualDom$attribute('diffuseConstant');
+var _elm_lang$svg$Svg_Attributes$descent = _elm_lang$virtual_dom$VirtualDom$attribute('descent');
+var _elm_lang$svg$Svg_Attributes$decelerate = _elm_lang$virtual_dom$VirtualDom$attribute('decelerate');
+var _elm_lang$svg$Svg_Attributes$d = _elm_lang$virtual_dom$VirtualDom$attribute('d');
+var _elm_lang$svg$Svg_Attributes$cy = _elm_lang$virtual_dom$VirtualDom$attribute('cy');
+var _elm_lang$svg$Svg_Attributes$cx = _elm_lang$virtual_dom$VirtualDom$attribute('cx');
+var _elm_lang$svg$Svg_Attributes$contentStyleType = _elm_lang$virtual_dom$VirtualDom$attribute('contentStyleType');
+var _elm_lang$svg$Svg_Attributes$contentScriptType = _elm_lang$virtual_dom$VirtualDom$attribute('contentScriptType');
+var _elm_lang$svg$Svg_Attributes$clipPathUnits = _elm_lang$virtual_dom$VirtualDom$attribute('clipPathUnits');
+var _elm_lang$svg$Svg_Attributes$class = _elm_lang$virtual_dom$VirtualDom$attribute('class');
+var _elm_lang$svg$Svg_Attributes$capHeight = _elm_lang$virtual_dom$VirtualDom$attribute('cap-height');
+var _elm_lang$svg$Svg_Attributes$calcMode = _elm_lang$virtual_dom$VirtualDom$attribute('calcMode');
+var _elm_lang$svg$Svg_Attributes$by = _elm_lang$virtual_dom$VirtualDom$attribute('by');
+var _elm_lang$svg$Svg_Attributes$bias = _elm_lang$virtual_dom$VirtualDom$attribute('bias');
+var _elm_lang$svg$Svg_Attributes$begin = _elm_lang$virtual_dom$VirtualDom$attribute('begin');
+var _elm_lang$svg$Svg_Attributes$bbox = _elm_lang$virtual_dom$VirtualDom$attribute('bbox');
+var _elm_lang$svg$Svg_Attributes$baseProfile = _elm_lang$virtual_dom$VirtualDom$attribute('baseProfile');
+var _elm_lang$svg$Svg_Attributes$baseFrequency = _elm_lang$virtual_dom$VirtualDom$attribute('baseFrequency');
+var _elm_lang$svg$Svg_Attributes$azimuth = _elm_lang$virtual_dom$VirtualDom$attribute('azimuth');
+var _elm_lang$svg$Svg_Attributes$autoReverse = _elm_lang$virtual_dom$VirtualDom$attribute('autoReverse');
+var _elm_lang$svg$Svg_Attributes$attributeType = _elm_lang$virtual_dom$VirtualDom$attribute('attributeType');
+var _elm_lang$svg$Svg_Attributes$attributeName = _elm_lang$virtual_dom$VirtualDom$attribute('attributeName');
+var _elm_lang$svg$Svg_Attributes$ascent = _elm_lang$virtual_dom$VirtualDom$attribute('ascent');
+var _elm_lang$svg$Svg_Attributes$arabicForm = _elm_lang$virtual_dom$VirtualDom$attribute('arabic-form');
+var _elm_lang$svg$Svg_Attributes$amplitude = _elm_lang$virtual_dom$VirtualDom$attribute('amplitude');
+var _elm_lang$svg$Svg_Attributes$allowReorder = _elm_lang$virtual_dom$VirtualDom$attribute('allowReorder');
+var _elm_lang$svg$Svg_Attributes$alphabetic = _elm_lang$virtual_dom$VirtualDom$attribute('alphabetic');
+var _elm_lang$svg$Svg_Attributes$additive = _elm_lang$virtual_dom$VirtualDom$attribute('additive');
+var _elm_lang$svg$Svg_Attributes$accumulate = _elm_lang$virtual_dom$VirtualDom$attribute('accumulate');
+var _elm_lang$svg$Svg_Attributes$accelerate = _elm_lang$virtual_dom$VirtualDom$attribute('accelerate');
+var _elm_lang$svg$Svg_Attributes$accentHeight = _elm_lang$virtual_dom$VirtualDom$attribute('accent-height');
 
-
-// ENCODING AND DECODING
-
-function encodeUri(string)
-{
-	return encodeURIComponent(string);
-}
-
-function decodeUri(string)
-{
-	try
-	{
-		return _elm_lang$core$Maybe$Just(decodeURIComponent(string));
-	}
-	catch(e)
-	{
-		return _elm_lang$core$Maybe$Nothing;
-	}
-}
-
-
-// SEND REQUEST
-
-function toTask(request, maybeProgress)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		var xhr = new XMLHttpRequest();
-
-		configureProgress(xhr, maybeProgress);
-
-		xhr.addEventListener('error', function() {
-			callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'NetworkError' }));
-		});
-		xhr.addEventListener('timeout', function() {
-			callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'Timeout' }));
-		});
-		xhr.addEventListener('load', function() {
-			callback(handleResponse(xhr, request.expect.responseToResult));
-		});
-
-		try
-		{
-			xhr.open(request.method, request.url, true);
-		}
-		catch (e)
-		{
-			return callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'BadUrl', _0: request.url }));
-		}
-
-		configureRequest(xhr, request);
-		send(xhr, request.body);
-
-		return function() { xhr.abort(); };
+var _elm_lang$svg$Svg_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
+var _elm_lang$svg$Svg_Events$simpleOn = F2(
+	function (name, msg) {
+		return A2(
+			_elm_lang$svg$Svg_Events$on,
+			name,
+			_elm_lang$core$Json_Decode$succeed(msg));
 	});
-}
+var _elm_lang$svg$Svg_Events$onBegin = _elm_lang$svg$Svg_Events$simpleOn('begin');
+var _elm_lang$svg$Svg_Events$onEnd = _elm_lang$svg$Svg_Events$simpleOn('end');
+var _elm_lang$svg$Svg_Events$onRepeat = _elm_lang$svg$Svg_Events$simpleOn('repeat');
+var _elm_lang$svg$Svg_Events$onAbort = _elm_lang$svg$Svg_Events$simpleOn('abort');
+var _elm_lang$svg$Svg_Events$onError = _elm_lang$svg$Svg_Events$simpleOn('error');
+var _elm_lang$svg$Svg_Events$onResize = _elm_lang$svg$Svg_Events$simpleOn('resize');
+var _elm_lang$svg$Svg_Events$onScroll = _elm_lang$svg$Svg_Events$simpleOn('scroll');
+var _elm_lang$svg$Svg_Events$onLoad = _elm_lang$svg$Svg_Events$simpleOn('load');
+var _elm_lang$svg$Svg_Events$onUnload = _elm_lang$svg$Svg_Events$simpleOn('unload');
+var _elm_lang$svg$Svg_Events$onZoom = _elm_lang$svg$Svg_Events$simpleOn('zoom');
+var _elm_lang$svg$Svg_Events$onActivate = _elm_lang$svg$Svg_Events$simpleOn('activate');
+var _elm_lang$svg$Svg_Events$onClick = _elm_lang$svg$Svg_Events$simpleOn('click');
+var _elm_lang$svg$Svg_Events$onFocusIn = _elm_lang$svg$Svg_Events$simpleOn('focusin');
+var _elm_lang$svg$Svg_Events$onFocusOut = _elm_lang$svg$Svg_Events$simpleOn('focusout');
+var _elm_lang$svg$Svg_Events$onMouseDown = _elm_lang$svg$Svg_Events$simpleOn('mousedown');
+var _elm_lang$svg$Svg_Events$onMouseMove = _elm_lang$svg$Svg_Events$simpleOn('mousemove');
+var _elm_lang$svg$Svg_Events$onMouseOut = _elm_lang$svg$Svg_Events$simpleOn('mouseout');
+var _elm_lang$svg$Svg_Events$onMouseOver = _elm_lang$svg$Svg_Events$simpleOn('mouseover');
+var _elm_lang$svg$Svg_Events$onMouseUp = _elm_lang$svg$Svg_Events$simpleOn('mouseup');
 
-function configureProgress(xhr, maybeProgress)
-{
-	if (maybeProgress.ctor === 'Nothing')
-	{
-		return;
-	}
-
-	xhr.addEventListener('progress', function(event) {
-		if (!event.lengthComputable)
-		{
-			return;
-		}
-		_elm_lang$core$Native_Scheduler.rawSpawn(maybeProgress._0({
-			bytes: event.loaded,
-			bytesExpected: event.total
-		}));
-	});
-}
-
-function configureRequest(xhr, request)
-{
-	function setHeader(pair)
-	{
-		xhr.setRequestHeader(pair._0, pair._1);
-	}
-
-	A2(_elm_lang$core$List$map, setHeader, request.headers);
-	xhr.responseType = request.expect.responseType;
-	xhr.withCredentials = request.withCredentials;
-
-	if (request.timeout.ctor === 'Just')
-	{
-		xhr.timeout = request.timeout._0;
-	}
-}
-
-function send(xhr, body)
-{
-	switch (body.ctor)
-	{
-		case 'EmptyBody':
-			xhr.send();
-			return;
-
-		case 'StringBody':
-			xhr.setRequestHeader('Content-Type', body._0);
-			xhr.send(body._1);
-			return;
-
-		case 'FormDataBody':
-			xhr.send(body._0);
-			return;
-	}
-}
-
-
-// RESPONSES
-
-function handleResponse(xhr, responseToResult)
-{
-	var response = toResponse(xhr);
-
-	if (xhr.status < 200 || 300 <= xhr.status)
-	{
-		response.body = xhr.responseText;
-		return _elm_lang$core$Native_Scheduler.fail({
-			ctor: 'BadStatus',
-			_0: response
-		});
-	}
-
-	var result = responseToResult(response);
-
-	if (result.ctor === 'Ok')
-	{
-		return _elm_lang$core$Native_Scheduler.succeed(result._0);
-	}
-	else
-	{
-		response.body = xhr.responseText;
-		return _elm_lang$core$Native_Scheduler.fail({
-			ctor: 'BadPayload',
-			_0: result._0,
-			_1: response
-		});
-	}
-}
-
-function toResponse(xhr)
-{
-	return {
-		status: { code: xhr.status, message: xhr.statusText },
-		headers: parseHeaders(xhr.getAllResponseHeaders()),
-		url: xhr.responseURL,
-		body: xhr.response
-	};
-}
-
-function parseHeaders(rawHeaders)
-{
-	var headers = _elm_lang$core$Dict$empty;
-
-	if (!rawHeaders)
-	{
-		return headers;
-	}
-
-	var headerPairs = rawHeaders.split('\u000d\u000a');
-	for (var i = headerPairs.length; i--; )
-	{
-		var headerPair = headerPairs[i];
-		var index = headerPair.indexOf('\u003a\u0020');
-		if (index > 0)
-		{
-			var key = headerPair.substring(0, index);
-			var value = headerPair.substring(index + 2);
-
-			headers = A3(_elm_lang$core$Dict$update, key, function(oldValue) {
-				if (oldValue.ctor === 'Just')
-				{
-					return _elm_lang$core$Maybe$Just(value + ', ' + oldValue._0);
-				}
-				return _elm_lang$core$Maybe$Just(value);
-			}, headers);
-		}
-	}
-
-	return headers;
-}
-
-
-// EXPECTORS
-
-function expectStringResponse(responseToResult)
-{
-	return {
-		responseType: 'text',
-		responseToResult: responseToResult
-	};
-}
-
-function mapExpect(func, expect)
-{
-	return {
-		responseType: expect.responseType,
-		responseToResult: function(response) {
-			var convertedResponse = expect.responseToResult(response);
-			return A2(_elm_lang$core$Result$map, func, convertedResponse);
-		}
-	};
-}
-
-
-// BODY
-
-function multipart(parts)
-{
-	var formData = new FormData();
-
-	while (parts.ctor !== '[]')
-	{
-		var part = parts._0;
-		formData.append(part._0, part._1);
-		parts = parts._1;
-	}
-
-	return { ctor: 'FormDataBody', _0: formData };
-}
-
-return {
-	toTask: F2(toTask),
-	expectStringResponse: expectStringResponse,
-	mapExpect: F2(mapExpect),
-	multipart: multipart,
-	encodeUri: encodeUri,
-	decodeUri: decodeUri
-};
-
-}();
-
-var _elm_lang$http$Http_Internal$map = F2(
-	function (func, request) {
-		return _elm_lang$core$Native_Utils.update(
-			request,
-			{
-				expect: A2(_elm_lang$http$Native_Http.mapExpect, func, request.expect)
-			});
-	});
-var _elm_lang$http$Http_Internal$RawRequest = F7(
-	function (a, b, c, d, e, f, g) {
-		return {method: a, headers: b, url: c, body: d, expect: e, timeout: f, withCredentials: g};
-	});
-var _elm_lang$http$Http_Internal$Request = function (a) {
-	return {ctor: 'Request', _0: a};
-};
-var _elm_lang$http$Http_Internal$Expect = {ctor: 'Expect'};
-var _elm_lang$http$Http_Internal$FormDataBody = {ctor: 'FormDataBody'};
-var _elm_lang$http$Http_Internal$StringBody = F2(
-	function (a, b) {
-		return {ctor: 'StringBody', _0: a, _1: b};
-	});
-var _elm_lang$http$Http_Internal$EmptyBody = {ctor: 'EmptyBody'};
-var _elm_lang$http$Http_Internal$Header = F2(
-	function (a, b) {
-		return {ctor: 'Header', _0: a, _1: b};
-	});
-
-var _elm_lang$http$Http$decodeUri = _elm_lang$http$Native_Http.decodeUri;
-var _elm_lang$http$Http$encodeUri = _elm_lang$http$Native_Http.encodeUri;
-var _elm_lang$http$Http$expectStringResponse = _elm_lang$http$Native_Http.expectStringResponse;
-var _elm_lang$http$Http$expectJson = function (decoder) {
-	return _elm_lang$http$Http$expectStringResponse(
-		function (response) {
-			return A2(_elm_lang$core$Json_Decode$decodeString, decoder, response.body);
-		});
-};
-var _elm_lang$http$Http$expectString = _elm_lang$http$Http$expectStringResponse(
-	function (response) {
-		return _elm_lang$core$Result$Ok(response.body);
-	});
-var _elm_lang$http$Http$multipartBody = _elm_lang$http$Native_Http.multipart;
-var _elm_lang$http$Http$stringBody = _elm_lang$http$Http_Internal$StringBody;
-var _elm_lang$http$Http$jsonBody = function (value) {
-	return A2(
-		_elm_lang$http$Http_Internal$StringBody,
-		'application/json',
-		A2(_elm_lang$core$Json_Encode$encode, 0, value));
-};
-var _elm_lang$http$Http$emptyBody = _elm_lang$http$Http_Internal$EmptyBody;
-var _elm_lang$http$Http$header = _elm_lang$http$Http_Internal$Header;
-var _elm_lang$http$Http$request = _elm_lang$http$Http_Internal$Request;
-var _elm_lang$http$Http$post = F3(
-	function (url, body, decoder) {
-		return _elm_lang$http$Http$request(
-			{
-				method: 'POST',
-				headers: {ctor: '[]'},
-				url: url,
-				body: body,
-				expect: _elm_lang$http$Http$expectJson(decoder),
-				timeout: _elm_lang$core$Maybe$Nothing,
-				withCredentials: false
-			});
-	});
-var _elm_lang$http$Http$get = F2(
-	function (url, decoder) {
-		return _elm_lang$http$Http$request(
-			{
-				method: 'GET',
-				headers: {ctor: '[]'},
-				url: url,
-				body: _elm_lang$http$Http$emptyBody,
-				expect: _elm_lang$http$Http$expectJson(decoder),
-				timeout: _elm_lang$core$Maybe$Nothing,
-				withCredentials: false
-			});
-	});
-var _elm_lang$http$Http$getString = function (url) {
-	return _elm_lang$http$Http$request(
-		{
-			method: 'GET',
-			headers: {ctor: '[]'},
-			url: url,
-			body: _elm_lang$http$Http$emptyBody,
-			expect: _elm_lang$http$Http$expectString,
-			timeout: _elm_lang$core$Maybe$Nothing,
-			withCredentials: false
-		});
-};
-var _elm_lang$http$Http$toTask = function (_p0) {
+var _sc_nz$elm_hangman$Main$stoneRadius = 15;
+var _sc_nz$elm_hangman$Main$stone = function (_p0) {
 	var _p1 = _p0;
-	return A2(_elm_lang$http$Native_Http.toTask, _p1._0, _elm_lang$core$Maybe$Nothing);
-};
-var _elm_lang$http$Http$send = F2(
-	function (resultToMessage, request) {
-		return A2(
-			_elm_lang$core$Task$attempt,
-			resultToMessage,
-			_elm_lang$http$Http$toTask(request));
-	});
-var _elm_lang$http$Http$Response = F4(
-	function (a, b, c, d) {
-		return {url: a, status: b, headers: c, body: d};
-	});
-var _elm_lang$http$Http$BadPayload = F2(
-	function (a, b) {
-		return {ctor: 'BadPayload', _0: a, _1: b};
-	});
-var _elm_lang$http$Http$BadStatus = function (a) {
-	return {ctor: 'BadStatus', _0: a};
-};
-var _elm_lang$http$Http$NetworkError = {ctor: 'NetworkError'};
-var _elm_lang$http$Http$Timeout = {ctor: 'Timeout'};
-var _elm_lang$http$Http$BadUrl = function (a) {
-	return {ctor: 'BadUrl', _0: a};
-};
-var _elm_lang$http$Http$StringPart = F2(
-	function (a, b) {
-		return {ctor: 'StringPart', _0: a, _1: b};
-	});
-var _elm_lang$http$Http$stringPart = _elm_lang$http$Http$StringPart;
-
-var _elm_lang$keyboard$Keyboard$onSelfMsg = F3(
-	function (router, _p0, state) {
-		var _p1 = _p0;
-		var _p2 = A2(_elm_lang$core$Dict$get, _p1.category, state);
-		if (_p2.ctor === 'Nothing') {
-			return _elm_lang$core$Task$succeed(state);
-		} else {
-			var send = function (tagger) {
-				return A2(
-					_elm_lang$core$Platform$sendToApp,
-					router,
-					tagger(_p1.keyCode));
-			};
-			return A2(
-				_elm_lang$core$Task$andThen,
-				function (_p3) {
-					return _elm_lang$core$Task$succeed(state);
-				},
-				_elm_lang$core$Task$sequence(
-					A2(_elm_lang$core$List$map, send, _p2._0.taggers)));
-		}
-	});
-var _elm_lang$keyboard$Keyboard_ops = _elm_lang$keyboard$Keyboard_ops || {};
-_elm_lang$keyboard$Keyboard_ops['&>'] = F2(
-	function (task1, task2) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (_p4) {
-				return task2;
-			},
-			task1);
-	});
-var _elm_lang$keyboard$Keyboard$init = _elm_lang$core$Task$succeed(_elm_lang$core$Dict$empty);
-var _elm_lang$keyboard$Keyboard$categorizeHelpHelp = F2(
-	function (value, maybeValues) {
-		var _p5 = maybeValues;
-		if (_p5.ctor === 'Nothing') {
-			return _elm_lang$core$Maybe$Just(
-				{
-					ctor: '::',
-					_0: value,
-					_1: {ctor: '[]'}
-				});
-		} else {
-			return _elm_lang$core$Maybe$Just(
-				{ctor: '::', _0: value, _1: _p5._0});
-		}
-	});
-var _elm_lang$keyboard$Keyboard$categorizeHelp = F2(
-	function (subs, subDict) {
-		categorizeHelp:
-		while (true) {
-			var _p6 = subs;
-			if (_p6.ctor === '[]') {
-				return subDict;
-			} else {
-				var _v4 = _p6._1,
-					_v5 = A3(
-					_elm_lang$core$Dict$update,
-					_p6._0._0,
-					_elm_lang$keyboard$Keyboard$categorizeHelpHelp(_p6._0._1),
-					subDict);
-				subs = _v4;
-				subDict = _v5;
-				continue categorizeHelp;
-			}
-		}
-	});
-var _elm_lang$keyboard$Keyboard$categorize = function (subs) {
-	return A2(_elm_lang$keyboard$Keyboard$categorizeHelp, subs, _elm_lang$core$Dict$empty);
-};
-var _elm_lang$keyboard$Keyboard$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
-var _elm_lang$keyboard$Keyboard$subscription = _elm_lang$core$Native_Platform.leaf('Keyboard');
-var _elm_lang$keyboard$Keyboard$Watcher = F2(
-	function (a, b) {
-		return {taggers: a, pid: b};
-	});
-var _elm_lang$keyboard$Keyboard$Msg = F2(
-	function (a, b) {
-		return {category: a, keyCode: b};
-	});
-var _elm_lang$keyboard$Keyboard$onEffects = F3(
-	function (router, newSubs, oldState) {
-		var rightStep = F3(
-			function (category, taggers, task) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (state) {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							function (pid) {
-								return _elm_lang$core$Task$succeed(
-									A3(
-										_elm_lang$core$Dict$insert,
-										category,
-										A2(_elm_lang$keyboard$Keyboard$Watcher, taggers, pid),
-										state));
-							},
-							_elm_lang$core$Process$spawn(
-								A3(
-									_elm_lang$dom$Dom_LowLevel$onDocument,
-									category,
-									_elm_lang$keyboard$Keyboard$keyCode,
-									function (_p7) {
-										return A2(
-											_elm_lang$core$Platform$sendToSelf,
-											router,
-											A2(_elm_lang$keyboard$Keyboard$Msg, category, _p7));
-									})));
-					},
-					task);
-			});
-		var bothStep = F4(
-			function (category, _p8, taggers, task) {
-				var _p9 = _p8;
-				return A2(
-					_elm_lang$core$Task$map,
-					A2(
-						_elm_lang$core$Dict$insert,
-						category,
-						A2(_elm_lang$keyboard$Keyboard$Watcher, taggers, _p9.pid)),
-					task);
-			});
-		var leftStep = F3(
-			function (category, _p10, task) {
-				var _p11 = _p10;
-				return A2(
-					_elm_lang$keyboard$Keyboard_ops['&>'],
-					_elm_lang$core$Process$kill(_p11.pid),
-					task);
-			});
-		return A6(
-			_elm_lang$core$Dict$merge,
-			leftStep,
-			bothStep,
-			rightStep,
-			oldState,
-			_elm_lang$keyboard$Keyboard$categorize(newSubs),
-			_elm_lang$core$Task$succeed(_elm_lang$core$Dict$empty));
-	});
-var _elm_lang$keyboard$Keyboard$MySub = F2(
-	function (a, b) {
-		return {ctor: 'MySub', _0: a, _1: b};
-	});
-var _elm_lang$keyboard$Keyboard$presses = function (tagger) {
-	return _elm_lang$keyboard$Keyboard$subscription(
-		A2(_elm_lang$keyboard$Keyboard$MySub, 'keypress', tagger));
-};
-var _elm_lang$keyboard$Keyboard$downs = function (tagger) {
-	return _elm_lang$keyboard$Keyboard$subscription(
-		A2(_elm_lang$keyboard$Keyboard$MySub, 'keydown', tagger));
-};
-var _elm_lang$keyboard$Keyboard$ups = function (tagger) {
-	return _elm_lang$keyboard$Keyboard$subscription(
-		A2(_elm_lang$keyboard$Keyboard$MySub, 'keyup', tagger));
-};
-var _elm_lang$keyboard$Keyboard$subMap = F2(
-	function (func, _p12) {
-		var _p13 = _p12;
-		return A2(
-			_elm_lang$keyboard$Keyboard$MySub,
-			_p13._0,
-			function (_p14) {
-				return func(
-					_p13._1(_p14));
-			});
-	});
-_elm_lang$core$Native_Platform.effectManagers['Keyboard'] = {pkg: 'elm-lang/keyboard', init: _elm_lang$keyboard$Keyboard$init, onEffects: _elm_lang$keyboard$Keyboard$onEffects, onSelfMsg: _elm_lang$keyboard$Keyboard$onSelfMsg, tag: 'sub', subMap: _elm_lang$keyboard$Keyboard$subMap};
-
-var _sc_nz$elm_hangman$Main$gameWon = function (model) {
 	return A2(
-		_elm_lang$core$List$all,
-		function (letter) {
-			return A2(_elm_lang$core$List$member, letter, model.guesses);
-		},
-		_elm_lang$core$String$toList(model.word));
-};
-var _sc_nz$elm_hangman$Main$formatLetter = F2(
-	function (model, letter) {
-		return A2(_elm_lang$core$List$member, letter, model.guesses) ? letter : _elm_lang$core$Native_Utils.chr('_');
-	});
-var _sc_nz$elm_hangman$Main$notInWord = F2(
-	function (model, letter) {
-		var wordLetters = _elm_lang$core$String$toList(model.word);
-		return !A2(_elm_lang$core$List$member, letter, wordLetters);
-	});
-var _sc_nz$elm_hangman$Main$incorrectGuesses = function (model) {
-	return A2(
-		_elm_lang$core$List$filter,
-		_sc_nz$elm_hangman$Main$notInWord(model),
-		model.guesses);
-};
-var _sc_nz$elm_hangman$Main$hangmanPictureFilename = function (chancesRemaining) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		'./img/hangman_',
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(chancesRemaining),
-			'.png'));
-};
-var _sc_nz$elm_hangman$Main$decodeRandomWordUrl = A2(
-	_elm_lang$core$Json_Decode$at,
-	{
-		ctor: '::',
-		_0: '0',
-		_1: {ctor: '[]'}
-	},
-	A2(_elm_lang$core$Json_Decode$field, 'word', _elm_lang$core$Json_Decode$string));
-var _sc_nz$elm_hangman$Main$gameStateView = function (model) {
-	var message = function () {
-		var _p0 = model.state;
-		switch (_p0.ctor) {
-			case 'Playing':
-				return 'Press any key to make a guess.';
-			case 'Won':
-				return 'Congratulations, you won!';
-			default:
-				return 'You lose!';
-		}
-	}();
-	return _elm_lang$html$Html$text(message);
-};
-var _sc_nz$elm_hangman$Main$incorrectGuessesView = function (model) {
-	var allIncorrectGuesses = _sc_nz$elm_hangman$Main$incorrectGuesses(model);
-	return _elm_lang$html$Html$text(
-		_elm_lang$core$String$fromList(allIncorrectGuesses));
-};
-var _sc_nz$elm_hangman$Main$alphabet = {
-	ctor: '::',
-	_0: _elm_lang$core$Native_Utils.chr('a'),
-	_1: {
-		ctor: '::',
-		_0: _elm_lang$core$Native_Utils.chr('b'),
-		_1: {
+		_elm_lang$svg$Svg$circle,
+		{
 			ctor: '::',
-			_0: _elm_lang$core$Native_Utils.chr('c'),
+			_0: _elm_lang$svg$Svg_Attributes$r(
+				_elm_lang$core$Basics$toString(_sc_nz$elm_hangman$Main$stoneRadius)),
 			_1: {
 				ctor: '::',
-				_0: _elm_lang$core$Native_Utils.chr('d'),
+				_0: _elm_lang$svg$Svg_Attributes$fill('black'),
 				_1: {
 					ctor: '::',
-					_0: _elm_lang$core$Native_Utils.chr('e'),
+					_0: _elm_lang$svg$Svg_Attributes$cy(
+						_elm_lang$core$Basics$toString(_sc_nz$elm_hangman$Main$stoneRadius + ((_p1._0 * _sc_nz$elm_hangman$Main$stoneRadius) * 2))),
 					_1: {
 						ctor: '::',
-						_0: _elm_lang$core$Native_Utils.chr('f'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$core$Native_Utils.chr('g'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$core$Native_Utils.chr('h'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$core$Native_Utils.chr('i'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$core$Native_Utils.chr('j'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$core$Native_Utils.chr('k'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$core$Native_Utils.chr('l'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$core$Native_Utils.chr('m'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$core$Native_Utils.chr('n'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$core$Native_Utils.chr('o'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$core$Native_Utils.chr('p'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$core$Native_Utils.chr('q'),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$core$Native_Utils.chr('r'),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$core$Native_Utils.chr('s'),
-																			_1: {
-																				ctor: '::',
-																				_0: _elm_lang$core$Native_Utils.chr('t'),
-																				_1: {
-																					ctor: '::',
-																					_0: _elm_lang$core$Native_Utils.chr('u'),
-																					_1: {
-																						ctor: '::',
-																						_0: _elm_lang$core$Native_Utils.chr('v'),
-																						_1: {
-																							ctor: '::',
-																							_0: _elm_lang$core$Native_Utils.chr('w'),
-																							_1: {
-																								ctor: '::',
-																								_0: _elm_lang$core$Native_Utils.chr('x'),
-																								_1: {
-																									ctor: '::',
-																									_0: _elm_lang$core$Native_Utils.chr('y'),
-																									_1: {
-																										ctor: '::',
-																										_0: _elm_lang$core$Native_Utils.chr('z'),
-																										_1: {ctor: '[]'}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
+						_0: _elm_lang$svg$Svg_Attributes$cx(
+							_elm_lang$core$Basics$toString(_sc_nz$elm_hangman$Main$stoneRadius + ((_p1._1 * _sc_nz$elm_hangman$Main$stoneRadius) * 2))),
+						_1: {ctor: '[]'}
 					}
 				}
 			}
-		}
-	}
-};
-var _sc_nz$elm_hangman$Main$keyCodeToLower = function (code) {
-	var character = _elm_lang$core$Char$toLower(
-		_elm_lang$core$Char$fromCode(code));
-	return A2(_elm_lang$core$List$member, character, _sc_nz$elm_hangman$Main$alphabet) ? _elm_lang$core$Maybe$Just(character) : _elm_lang$core$Maybe$Nothing;
-};
-var _sc_nz$elm_hangman$Main$addKeyCodeToGuesses = F2(
-	function (model, keycode) {
-		var character = _sc_nz$elm_hangman$Main$keyCodeToLower(keycode);
-		var _p1 = character;
-		if (_p1.ctor === 'Just') {
-			var _p2 = _p1._0;
-			return A2(_elm_lang$core$List$member, _p2, model.guesses) ? model.guesses : A2(
-				_elm_lang$core$Basics_ops['++'],
-				model.guesses,
-				{
-					ctor: '::',
-					_0: _p2,
-					_1: {ctor: '[]'}
-				});
-		} else {
-			return model.guesses;
-		}
-	});
-var _sc_nz$elm_hangman$Main$chances = 10;
-var _sc_nz$elm_hangman$Main$chancesView = function (model) {
-	var chancesRemaining = _sc_nz$elm_hangman$Main$chances - _elm_lang$core$List$length(
-		_sc_nz$elm_hangman$Main$incorrectGuesses(model));
-	return A2(
-		_elm_lang$html$Html$img,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$src(
-				_sc_nz$elm_hangman$Main$hangmanPictureFilename(chancesRemaining)),
-			_1: {ctor: '[]'}
 		},
 		{ctor: '[]'});
 };
-var _sc_nz$elm_hangman$Main$gameLost = function (model) {
-	return _elm_lang$core$Native_Utils.cmp(
-		_sc_nz$elm_hangman$Main$chances - _elm_lang$core$List$length(
-			_sc_nz$elm_hangman$Main$incorrectGuesses(model)),
-		0) < 1;
-};
-var _sc_nz$elm_hangman$Main$Model = F3(
-	function (a, b, c) {
-		return {state: a, word: b, guesses: c};
-	});
-var _sc_nz$elm_hangman$Main$Lost = {ctor: 'Lost'};
-var _sc_nz$elm_hangman$Main$Won = {ctor: 'Won'};
-var _sc_nz$elm_hangman$Main$update = F2(
-	function (msg, model) {
-		var _p3 = msg;
-		if (_p3.ctor === 'NewWord') {
-			if (_p3._0.ctor === 'Ok') {
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{word: _p3._0._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			} else {
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			}
-		} else {
-			var newModel = _elm_lang$core$Native_Utils.update(
-				model,
+var _sc_nz$elm_hangman$Main$header = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$id('header'),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$h1,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('GO'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h2,
+				{ctor: '[]'},
 				{
-					guesses: A2(_sc_nz$elm_hangman$Main$addKeyCodeToGuesses, model, _p3._0)
-				});
-			return (_elm_lang$core$Native_Utils.eq(model.state, _sc_nz$elm_hangman$Main$Won) || _elm_lang$core$Native_Utils.eq(model.state, _sc_nz$elm_hangman$Main$Lost)) ? {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none} : (_sc_nz$elm_hangman$Main$gameWon(newModel) ? {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					newModel,
-					{state: _sc_nz$elm_hangman$Main$Won}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			} : (_sc_nz$elm_hangman$Main$gameLost(newModel) ? {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					newModel,
-					{state: _sc_nz$elm_hangman$Main$Lost}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			} : {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none}));
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('(Easy on Me)'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
 		}
 	});
-var _sc_nz$elm_hangman$Main$Playing = {ctor: 'Playing'};
-var _sc_nz$elm_hangman$Main$correctGuessesView = function (model) {
-	var formattedWord = A2(
-		_elm_lang$core$List$map,
-		_sc_nz$elm_hangman$Main$formatLetter(model),
-		_elm_lang$core$String$toList(model.word));
-	return _elm_lang$core$Native_Utils.eq(model.state, _sc_nz$elm_hangman$Main$Playing) ? _elm_lang$html$Html$text(
-		_elm_lang$core$String$fromList(formattedWord)) : _elm_lang$html$Html$text(model.word);
+var _sc_nz$elm_hangman$Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _sc_nz$elm_hangman$Main$update = F2(
+	function (msg, model) {
+		var _p2 = msg;
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _sc_nz$elm_hangman$Main$boardSize = 9;
+var _sc_nz$elm_hangman$Main$intersectionToGrid = F2(
+	function (index, _p3) {
+		var y = (index / _sc_nz$elm_hangman$Main$boardSize) | 0;
+		var x = A2(_elm_lang$core$Basics_ops['%'], index, _sc_nz$elm_hangman$Main$boardSize);
+		return {ctor: '_Tuple2', _0: x, _1: y};
+	});
+var _sc_nz$elm_hangman$Main$boardView = function (board) {
+	var svgWidth = (_sc_nz$elm_hangman$Main$stoneRadius * _sc_nz$elm_hangman$Main$boardSize) * 2;
+	var positions = A2(_elm_lang$core$List$indexedMap, _sc_nz$elm_hangman$Main$intersectionToGrid, board);
+	var stones = A2(_elm_lang$core$List$map, _sc_nz$elm_hangman$Main$stone, positions);
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$id('board'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$svg$Svg$svg,
+				{
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$width(
+						_elm_lang$core$Basics$toString(svgWidth)),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$svg$Svg_Attributes$height(
+							_elm_lang$core$Basics$toString(svgWidth)),
+						_1: {ctor: '[]'}
+					}
+				},
+				stones),
+			_1: {ctor: '[]'}
+		});
 };
 var _sc_nz$elm_hangman$Main$view = function (model) {
 	return A2(
@@ -9660,106 +8626,39 @@ var _sc_nz$elm_hangman$Main$view = function (model) {
 		},
 		{
 			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('chances'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: _sc_nz$elm_hangman$Main$chancesView(model),
-					_1: {ctor: '[]'}
-				}),
+			_0: _sc_nz$elm_hangman$Main$header,
 			_1: {
 				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('correctGuesses'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: _sc_nz$elm_hangman$Main$correctGuessesView(model),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('stateMessage'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _sc_nz$elm_hangman$Main$gameStateView(model),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('incorrectGuesses'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: _sc_nz$elm_hangman$Main$incorrectGuessesView(model),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('footer'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Drawings by Henrik Hedlund'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
+				_0: _sc_nz$elm_hangman$Main$boardView(model.board),
+				_1: {ctor: '[]'}
 			}
 		});
 };
-var _sc_nz$elm_hangman$Main$Guess = function (a) {
-	return {ctor: 'Guess', _0: a};
-};
-var _sc_nz$elm_hangman$Main$subscriptions = function (model) {
-	return _elm_lang$keyboard$Keyboard$downs(_sc_nz$elm_hangman$Main$Guess);
-};
-var _sc_nz$elm_hangman$Main$NewWord = function (a) {
-	return {ctor: 'NewWord', _0: a};
-};
-var _sc_nz$elm_hangman$Main$getRandomWord = function () {
-	var url = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=true&excludePartOfSpeech=proper-noun&minCorpusCount=100000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=0&maxLength=-1&limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5';
-	var request = A2(_elm_lang$http$Http$get, url, _sc_nz$elm_hangman$Main$decodeRandomWordUrl);
-	return A2(_elm_lang$http$Http$send, _sc_nz$elm_hangman$Main$NewWord, request);
-}();
+var _sc_nz$elm_hangman$Main$Model = F3(
+	function (a, b, c) {
+		return {state: a, turn: b, board: c};
+	});
+var _sc_nz$elm_hangman$Main$Lost = {ctor: 'Lost'};
+var _sc_nz$elm_hangman$Main$Won = {ctor: 'Won'};
+var _sc_nz$elm_hangman$Main$Playing = {ctor: 'Playing'};
+var _sc_nz$elm_hangman$Main$Black = {ctor: 'Black'};
+var _sc_nz$elm_hangman$Main$White = {ctor: 'White'};
+var _sc_nz$elm_hangman$Main$Nothing = {ctor: 'Nothing'};
 var _sc_nz$elm_hangman$Main$init = {
 	ctor: '_Tuple2',
 	_0: A3(
 		_sc_nz$elm_hangman$Main$Model,
 		_sc_nz$elm_hangman$Main$Playing,
-		'',
-		{ctor: '[]'}),
-	_1: _sc_nz$elm_hangman$Main$getRandomWord
+		_sc_nz$elm_hangman$Main$Black,
+		A2(_elm_lang$core$List$repeat, _sc_nz$elm_hangman$Main$boardSize * _sc_nz$elm_hangman$Main$boardSize, _sc_nz$elm_hangman$Main$Nothing)),
+	_1: _elm_lang$core$Platform_Cmd$none
 };
 var _sc_nz$elm_hangman$Main$main = _elm_lang$html$Html$program(
 	{init: _sc_nz$elm_hangman$Main$init, view: _sc_nz$elm_hangman$Main$view, update: _sc_nz$elm_hangman$Main$update, subscriptions: _sc_nz$elm_hangman$Main$subscriptions})();
+var _sc_nz$elm_hangman$Main$Just = function (a) {
+	return {ctor: 'Just', _0: a};
+};
+var _sc_nz$elm_hangman$Main$PlaceStone = {ctor: 'PlaceStone'};
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
